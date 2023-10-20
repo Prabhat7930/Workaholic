@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "916729751886",
+    "project_id": "workaholic-de99f",
+    "storage_bucket": "workaholic-de99f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:916729751886:android:c22c9d4a22547e7f58d61f",
+        "android_client_info": {
+          "package_name": "com.example.workaholic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrF2M0jPMpZhmx6b1E6oz1QcpPAxrREzY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

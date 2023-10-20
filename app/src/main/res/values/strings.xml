@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Workaholic!</string>
+    <string name="image_contentDescription">worker</string>
+    <string name="tv_text1">Let\'s Do Some Work</string>
+    <string name="tv_text2">Collaborate and Plan Together Across Multiple
+        Devices on Workaholic Minimalistic Application</string>
+
+    <string name="btn_text1">SIGN IN</string>
+    <string name="text_for_sign_up">Don\'t have an account?</string>
+    <string name="btn_text2">SIGN UP</string>
+    <string name="btn_text2_underline"><u>SIGN UP</u></string>
+
+    <string name="sign_up_description_text">Enter your name, email id and password
+        to register with us</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+
+    <string name="sign_in_description_text">Enter your email id and password</string>
+
+    <string name="please_click_again_to_exit">Please click again to exit</string>
+    <string name="please_wait">Please Wait&#8230;</string>
+
+    <string name="nav_my_profile">My Profile</string>
+    <string name="nav_sign_out">Sign Out</string>
+
+    <string name="mobile">Mobile</string>
+    <string name="update">UPDATE</string>
+    <string name="my_profile">My Profile</string>
+
+</resources>
