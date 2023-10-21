@@ -3,12 +3,10 @@
 package com.example.workaholic.activity
 
 import android.Manifest
-import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
@@ -28,7 +26,7 @@ class ProfileActivity : BaseActivity() {
 
     companion object {
         private const val READ_STORAGE_PERMISSION_CODE = 1
-        private const val IMAGE_READ_REQUEST_CODE = 2
+        //private const val IMAGE_READ_REQUEST_CODE = 2
     }
 
     private var mySelectedImageURI : Uri? = null
@@ -78,8 +76,11 @@ class ProfileActivity : BaseActivity() {
         }
     }
 
-    val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) {uri ->
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) {uri ->
         if (uri != null) {
+
+            val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
+            applicationContext.contentResolver.takePersistableUriPermission(uri, flag)
 
             mySelectedImageURI = uri
 
@@ -100,13 +101,15 @@ class ProfileActivity : BaseActivity() {
             Log.d("photo", "not selected")
         }
     }
-    private fun takeImagefromGallery() {
-        /*var galleryIntent = Intent(Intent.ACTION_PICK,
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        resultLauncher.launch(galleryIntent)*/
-    }
 
-    /*
+    /*private fun takeImagefromGallery() {
+        var galleryIntent = Intent(Intent.ACTION_PICK,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        resultLauncher.launch(galleryIntent)
+    }*/
+
+
+    /* LATEST NON DEPRECATED METHOD FOR IMAGE PICK
     private var resultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
