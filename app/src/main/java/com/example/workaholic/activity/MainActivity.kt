@@ -1,9 +1,13 @@
 package com.example.workaholic.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.MenuItem
+import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.GravityCompat
 import com.bumptech.glide.Glide
 import com.example.workaholic.R
@@ -17,6 +21,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
 
     private lateinit var binding : ActivityMainBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +43,6 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
         binding.appBar.toolbarMain.setNavigationOnClickListener {
             toggleDrawer()
         }
-
     }
 
     private fun toggleDrawer() {
@@ -61,11 +65,23 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
         }
     }
 
+
+    private val startUpdateActivityForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    FireStoreClass().loadUserData(this@MainActivity)
+                }
+                else {
+                    Log.e("Cancelled", "Cancelled")
+                }
+        }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.nav_my_profile -> {
                 Handler().postDelayed({
-                    startActivity(Intent(this@MainActivity, ProfileActivity::class.java))
+                    startUpdateActivityForResult.launch(Intent(this@MainActivity, ProfileActivity::class.java))
                 }, 300)
 
             }
@@ -90,12 +106,16 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
 
     fun updateNavUserDetails(user : User) {
         val navUserImage : CircleImageView = findViewById(R.id.nav_user_image)
+        val userName : TextView = findViewById(R.id.tv_username)
+
         Glide
             .with(this)
             .load(user.image)
             .centerCrop()
             .placeholder(R.drawable.ic_user_place_holder)
             .into(navUserImage)
+
+        userName.text = user.name
     }
 
 

@@ -3,11 +3,13 @@
 package com.example.workaholic.activity
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,6 +20,9 @@ import com.example.workaholic.R
 import com.example.workaholic.databinding.ActivityProfileBinding
 import com.example.workaholic.firebase.FireStoreClass
 import com.example.workaholic.models.User
+import com.example.workaholic.utils.Constants
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import java.io.IOException
 
 class ProfileActivity : BaseActivity() {
@@ -30,6 +35,8 @@ class ProfileActivity : BaseActivity() {
     }
 
     private var mySelectedImageURI : Uri? = null
+    private var myProfileImageURL : String = ""
+    private lateinit var myUserDetails : User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +51,7 @@ class ProfileActivity : BaseActivity() {
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.READ_MEDIA_IMAGES) ==
                 PackageManager.PERMISSION_GRANTED) {
-                //takeImagefromGallery()
+                //takeImageFromGallery()
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
             else {
@@ -54,6 +61,31 @@ class ProfileActivity : BaseActivity() {
                     READ_STORAGE_PERMISSION_CODE
                 )
             }
+        }
+
+        binding.btnUpdate.setOnClickListener {
+            if (mySelectedImageURI != null) {
+                uploadUserImage(myUserDetails)
+            }
+            else {
+                showProgressDialog(resources.getString(R.string.please_wait))
+                updateUserProfileData()
+            }
+        }
+    }
+
+    private fun setupActionBar() {
+        setSupportActionBar(binding.toolbarProfile)
+
+        var actionBar = supportActionBar
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24_white)
+            actionBar.title = resources.getString(R.string.my_profile)
+        }
+
+        binding.toolbarProfile.setNavigationOnClickListener {
+            onBackPressed()
         }
     }
 
@@ -66,7 +98,7 @@ class ProfileActivity : BaseActivity() {
         if (requestCode == READ_STORAGE_PERMISSION_CODE) {
             if (grantResults.isNotEmpty() &&
                 grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //takeImagefromGallery()
+                //takeImageFromGallery()
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
         }
@@ -102,7 +134,7 @@ class ProfileActivity : BaseActivity() {
         }
     }
 
-    /*private fun takeImagefromGallery() {
+    /*private fun takeImageFromGallery() {
         var galleryIntent = Intent(Intent.ACTION_PICK,
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         resultLauncher.launch(galleryIntent)
@@ -131,51 +163,10 @@ class ProfileActivity : BaseActivity() {
             }
         }
     }*/
-
-
-    /* DEPRECATED FOR ACTIVITY RESULT
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK
-            && requestCode == IMAGE_READ_REQUEST_CODE
-            && data!!.data != null) {
-            mySelectedImageURI = data.data
-
-
-            try {
-                Glide
-                    .with(this@ProfileActivity)
-                    .load(mySelectedImageURI)
-                    .centerCrop()
-                    .placeholder(R.drawable.ic_user_place_holder)
-                    .into(binding.userProfileImage)
-            }
-            catch (e : IOException) {
-                 e.printStackTrace()
-            }
-
-
-        }
-    }*/
-
-    private fun setupActionBar() {
-        setSupportActionBar(binding.toolbarProfile)
-
-        var actionBar = supportActionBar
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24_white)
-            actionBar.title = resources.getString(R.string.my_profile)
-        }
-
-        binding.toolbarProfile.setNavigationOnClickListener {
-            onBackPressed()
-        }
-
-
-    }
-
     fun setUserDataInUI (user : User) {
+
+        myUserDetails = user
+
         Glide
             .with(this@ProfileActivity)
             .load(user.image)
@@ -185,8 +176,84 @@ class ProfileActivity : BaseActivity() {
 
         binding.tvName2.setText(user.name)
         binding.tvEmail3.setText(user.email)
-        if (user.mobileNum != 0L && user.mobileNum.toString().length > 9) {
+        if (user.mobileNum != 0L && user.mobileNum.toString().length == 10) {
             binding.tvMobile.setText(user.mobileNum.toString())
         }
+    }
+
+    private fun uploadUserImage(user: User) {
+        showProgressDialog(resources.getString(R.string.please_wait))
+
+        if (mySelectedImageURI != null) {
+            val storageRef : StorageReference = FirebaseStorage.getInstance()
+                .reference.child("${user.id}.${getFileExtension(mySelectedImageURI)}")
+
+            storageRef.putFile(mySelectedImageURI!!).addOnSuccessListener {
+                taskSnapshot ->
+                Log.e("Firebase Image", taskSnapshot.metadata!!.reference!!.downloadUrl.toString())
+                hideProgressDialog()
+                taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener {
+                    uri ->
+                    Log.e("Downloadable Image URL", uri.toString())
+                    myProfileImageURL = uri.toString()
+                    
+                    updateUserProfileData()
+                }
+            }.addOnFailureListener {
+                exception ->
+                Toast.makeText(this@ProfileActivity,
+                    exception.message, Toast.LENGTH_SHORT).show()
+
+                hideProgressDialog()
+            }
+
+        }
+    }
+
+    private fun updateUserProfileData() {
+        val userHashMap = HashMap<String, Any>()
+        var changesMade = false
+
+        if (myProfileImageURL.isNotEmpty() && myProfileImageURL != myUserDetails.image) {
+            userHashMap[Constants.IMAGE] = myProfileImageURL
+            changesMade = true
+        }
+
+        if (binding.tvName2.text.toString().isNotEmpty() && binding.tvName2.text.toString() != myUserDetails.name) {
+            userHashMap[Constants.NAME] = binding.tvName2.text.toString()
+            changesMade = true
+        }
+        else if (binding.tvName2.text.toString().isEmpty()){
+            hideProgressDialog()
+            Toast.makeText(this@ProfileActivity, "Name cannot be null", Toast.LENGTH_SHORT).show()
+        }
+
+        if (binding.tvMobile.text.toString().isNotEmpty() && binding.tvMobile.text.toString() != myUserDetails.mobileNum.toString()
+            && binding.tvMobile.text.toString().length == 10 && binding.tvMobile.text.toString().toLong() != 0L) {
+            userHashMap[Constants.MOBILE] = binding.tvMobile.text.toString().toLong()
+            changesMade = true
+        }
+        else if (binding.tvMobile.text.toString().isEmpty() || binding.tvMobile.text.toString().length != 10
+            || binding.tvMobile.text.toString().toLong() == 0L) {
+            hideProgressDialog()
+            Toast.makeText(this@ProfileActivity, "Mobile number cannot be left empty and should be exactly 10 digits", Toast.LENGTH_SHORT).show()
+        }
+
+        if (changesMade) {
+            FireStoreClass().updateUserProfileData(this@ProfileActivity,
+                userHashMap)
+        }
+    }
+
+    private fun getFileExtension(uri : Uri?): String? {
+        return MimeTypeMap.getSingleton().getExtensionFromMimeType(
+            contentResolver.getType(uri!!)
+        )
+    }
+    fun profileUpdateSuccess() {
+        hideProgressDialog()
+        setResult(Activity.RESULT_OK)
+
+        finish()
     }
 }

@@ -23,6 +23,17 @@
 
     <include layout="@layout/main_content"/>
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/colorAccent"
+        android:contentDescription="@string/image_contentDescription"
+        app:srcCompat="@drawable/ic_vector_add">
+
+    </com.google.android.material.floatingactionbutton.FloatingActionButton>
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

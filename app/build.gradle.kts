@@ -43,12 +43,13 @@ android {
 }
 
 dependencies {
+    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
     implementation("com.github.bumptech.glide:glide:4.11.0")
     implementation("com.github.bumptech.glide:compiler:4.11.0")
     implementation("de.hdodenhof:circleimageview:3.1.0")
-    implementation("com.google.firebase:firebase-firestore-ktx:24.8.1")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.9.0")
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
-    implementation("com.google.firebase:firebase-auth-ktx:22.1.2")
+    implementation("com.google.firebase:firebase-auth-ktx:22.2.0")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")

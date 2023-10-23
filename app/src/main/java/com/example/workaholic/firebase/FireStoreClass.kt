@@ -2,6 +2,7 @@ package com.example.workaholic.firebase
 
 import android.app.Activity
 import android.util.Log
+import android.widget.Toast
 import com.example.workaholic.activity.MainActivity
 import com.example.workaholic.activity.ProfileActivity
 import com.example.workaholic.activity.SignInActivity
@@ -72,6 +73,21 @@ open class FireStoreClass {
 
                 Log.e(activity.javaClass.simpleName,
                     "Error during Signing In")
+
+            }
+    }
+
+    fun updateUserProfileData(activity: ProfileActivity, userHashMap: HashMap<String, Any>) {
+        myFireStore.collection(Constants.USERS)
+            .document(getCurrUserId())
+            .update(userHashMap)
+            .addOnSuccessListener {
+                Toast.makeText(activity, "Profile Updated successfully!", Toast.LENGTH_SHORT).show()
+                activity.profileUpdateSuccess()
+            }
+            .addOnFailureListener {
+                Toast.makeText(activity,
+                    "Error Updating Profile", Toast.LENGTH_SHORT).show()
 
             }
     }
