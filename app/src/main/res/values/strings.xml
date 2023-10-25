@@ -34,4 +34,11 @@
     <string name="btn_create_board">CREATE</string>
 
     <string name="no_boards_available">No Boards are available!!</string>
+
+    <string name="add_item_to_list">Add List</string>
+    <string name="hint_list_name">List Name</string>
+    <string name="action_add_card">Add Card</string>
+    <string name="hint_card_name">Card Name</string>
+    <string name="add_list">Add List</string>
+
 </resources>

@@ -7,7 +7,6 @@ import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.GravityCompat
@@ -162,6 +161,14 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
 
             val adapter = BoardItemsAdapter(this, boardList)
             binding.appBar.mainContentForBoard.rvBoardList.adapter = adapter
+
+            adapter.setOnClickListener(object : BoardItemsAdapter.OnClickListener {
+                override fun onCLick(position: Int, model: Board) {
+                    val intent = Intent(this@MainActivity, TaskListActivity::class.java)
+                    intent.putExtra(Constants.DOCUMENT_ID, model.documentId)
+                    startActivity(intent)
+                }
+            })
         }
         else {
             binding.appBar.mainContentForBoard.rvBoardList.visibility = View.GONE

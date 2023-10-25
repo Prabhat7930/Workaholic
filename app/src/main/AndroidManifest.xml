@@ -18,6 +18,12 @@
         android:theme="@style/Base.Theme.Workaholic"
         tools:targetApi="31">
         <activity
+            android:name=".activity.TaskListActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Base.Theme.Workaholic"
+            tools:ignore="LockedOrientationActivity"/>
+        <activity
             android:name=".activity.BoardActivity"
             android:exported="true"
             android:screenOrientation="portrait"

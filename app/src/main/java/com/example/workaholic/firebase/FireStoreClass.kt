@@ -8,6 +8,7 @@ import com.example.workaholic.activity.MainActivity
 import com.example.workaholic.activity.ProfileActivity
 import com.example.workaholic.activity.SignInActivity
 import com.example.workaholic.activity.SignUpActivity
+import com.example.workaholic.activity.TaskListActivity
 import com.example.workaholic.models.Board
 import com.example.workaholic.models.User
 import com.example.workaholic.utils.Constants
@@ -136,6 +137,16 @@ open class FireStoreClass {
             }
             .addOnFailureListener {
                 activity.hideProgressDialog()
+            }
+    }
+
+    fun getBoardDetails(activity : TaskListActivity, documentID : String) {
+        myFireStore.collection(Constants.BOARDS)
+            .document(documentID)
+            .get()
+            .addOnSuccessListener {
+                document ->
+                activity.boardDetails(document.toObject(Board::class.java)!!)
             }
     }
 
