@@ -28,4 +28,8 @@
     <string name="update">UPDATE</string>
     <string name="my_profile">My Profile</string>
 
+    <string name="create_board">Create Board</string>
+    <string name="create_board_message">Tap to create a Board</string>
+    <string name="board_name">BOARD NAME</string>
+    <string name="btn_create_board">CREATE</string>
 </resources>

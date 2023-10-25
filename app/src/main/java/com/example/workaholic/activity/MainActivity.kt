@@ -14,6 +14,7 @@ import com.example.workaholic.R
 import com.example.workaholic.databinding.ActivityMainBinding
 import com.example.workaholic.firebase.FireStoreClass
 import com.example.workaholic.models.User
+import com.example.workaholic.utils.Constants
 import com.google.android.material.navigation.NavigationView.*
 import com.google.firebase.auth.FirebaseAuth
 import de.hdodenhof.circleimageview.CircleImageView
@@ -22,6 +23,7 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
 
     private lateinit var binding : ActivityMainBinding
 
+    private lateinit var myUserName : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +36,12 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
         binding.navView.setNavigationItemSelectedListener (this)
 
         FireStoreClass().loadUserData(this)
+
+        binding.appBar.btnBoardActivity.setOnClickListener {
+            val intent = Intent(this@MainActivity, BoardActivity::class.java)
+            intent.putExtra(Constants.NAME, myUserName)
+            startActivity(intent)
+        }
     }
 
     private fun setupActionBar() {
@@ -106,7 +114,8 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
 
     fun updateNavUserDetails(user : User) {
         val navUserImage : CircleImageView = findViewById(R.id.nav_user_image)
-        val userName : TextView = findViewById(R.id.tv_username)
+        var navUserName : TextView = findViewById(R.id.tv_username)
+        myUserName = user.name
 
         Glide
             .with(this)
@@ -115,7 +124,7 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
             .placeholder(R.drawable.ic_user_place_holder)
             .into(navUserImage)
 
-        userName.text = user.name
+        navUserName.text = user.name
     }
 
 

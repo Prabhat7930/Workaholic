@@ -3,10 +3,12 @@ package com.example.workaholic.firebase
 import android.app.Activity
 import android.util.Log
 import android.widget.Toast
+import com.example.workaholic.activity.BoardActivity
 import com.example.workaholic.activity.MainActivity
 import com.example.workaholic.activity.ProfileActivity
 import com.example.workaholic.activity.SignInActivity
 import com.example.workaholic.activity.SignUpActivity
+import com.example.workaholic.models.Board
 import com.example.workaholic.models.User
 import com.example.workaholic.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
@@ -55,6 +57,11 @@ open class FireStoreClass {
                             activity.setUserDataInUI(loggedInUser)
                         }
                     }
+                    is BoardActivity -> {
+                        if (loggedInUser != null) {
+                            activity.setupForUser(loggedInUser)
+                        }
+                    }
                 }
 
             }.addOnFailureListener {
@@ -67,6 +74,9 @@ open class FireStoreClass {
                         activity.hideProgressDialog()
                     }
                     is ProfileActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                    is BoardActivity -> {
                         activity.hideProgressDialog()
                     }
                 }
@@ -92,9 +102,26 @@ open class FireStoreClass {
             }
     }
 
+    fun registerBoard(activity: BoardActivity, boardInfo: Board) {
+        myFireStore.collection(Constants.BOARDS)
+            .document(getCurrUserId())
+            .set(boardInfo, SetOptions.merge())
+            .addOnSuccessListener {
+                Toast.makeText(activity,
+                    "Board Created Successfully!", Toast.LENGTH_SHORT).show()
+                activity.boardCreatedSuccessfully()
+            }
+            .addOnFailureListener {
+                activity.hideProgressDialog()
+                Toast.makeText(activity,
+                    "Board Creation Failed!", Toast.LENGTH_SHORT).show()
+                activity.boardCreatedSuccessfully()
+            }
+    }
+
     fun getCurrUserId() : String {
         var currUser = FirebaseAuth.getInstance().currentUser
-        var currUserId: String = ""
+        var currUserId = ""
 
         if (currUser != null) {
             currUserId = currUser.uid

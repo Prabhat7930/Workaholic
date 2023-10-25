@@ -24,7 +24,7 @@
     <include layout="@layout/main_content"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id=""
+        android:id="@+id/btn_board_activity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -34,6 +34,16 @@
 
     </com.google.android.material.floatingactionbutton.FloatingActionButton>
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="120dp"
+        android:text="@string/create_board_message"
+        android:textColor="@color/black"
+        android:textSize="20sp">
+
+    </androidx.appcompat.widget.AppCompatTextView>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

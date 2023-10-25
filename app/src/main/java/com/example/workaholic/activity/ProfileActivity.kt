@@ -31,7 +31,6 @@ class ProfileActivity : BaseActivity() {
 
     companion object {
         private const val READ_STORAGE_PERMISSION_CODE = 1
-        //private const val IMAGE_READ_REQUEST_CODE = 2
     }
 
     private var mySelectedImageURI : Uri? = null
@@ -84,9 +83,7 @@ class ProfileActivity : BaseActivity() {
             actionBar.title = resources.getString(R.string.my_profile)
         }
 
-        binding.toolbarProfile.setNavigationOnClickListener {
-            onBackPressed()
-        }
+        binding.toolbarProfile.setNavigationOnClickListener {onBackPressed() }
     }
 
     override fun onRequestPermissionsResult(
@@ -190,7 +187,6 @@ class ProfileActivity : BaseActivity() {
 
             storageRef.putFile(mySelectedImageURI!!).addOnSuccessListener {
                 taskSnapshot ->
-                Log.e("Firebase Image", taskSnapshot.metadata!!.reference!!.downloadUrl.toString())
                 hideProgressDialog()
                 taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener {
                     uri ->
