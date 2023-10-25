@@ -221,6 +221,7 @@ class ProfileActivity : BaseActivity() {
         }
         else if (binding.tvName2.text.toString().isEmpty()){
             hideProgressDialog()
+            changesMade = false
             Toast.makeText(this@ProfileActivity, "Name cannot be null", Toast.LENGTH_SHORT).show()
         }
 
@@ -232,7 +233,8 @@ class ProfileActivity : BaseActivity() {
         else if (binding.tvMobile.text.toString().isEmpty() || binding.tvMobile.text.toString().length != 10
             || binding.tvMobile.text.toString().toLong() == 0L) {
             hideProgressDialog()
-            Toast.makeText(this@ProfileActivity, "Mobile number cannot be left empty and should be exactly 10 digits", Toast.LENGTH_SHORT).show()
+            changesMade = false
+            Toast.makeText(this@ProfileActivity, "Mobile number cannot be left empty", Toast.LENGTH_SHORT).show()
         }
 
         if (changesMade) {

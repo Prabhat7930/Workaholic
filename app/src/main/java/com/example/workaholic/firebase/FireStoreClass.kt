@@ -34,7 +34,7 @@ open class FireStoreClass {
             }
     }
 
-    fun loadUserData(activity: Activity) {
+    fun loadUserData(activity: Activity, readBoardList : Boolean = false) {
         myFireStore.collection(Constants.USERS)
             .document(getCurrUserId())
             .get()
@@ -49,7 +49,7 @@ open class FireStoreClass {
                     }
                     is MainActivity -> {
                         if (loggedInUser != null) {
-                            activity.updateNavUserDetails(loggedInUser)
+                            activity.updateNavUserDetails(loggedInUser, readBoardList)
                         }
                     }
                     is ProfileActivity -> {
@@ -104,7 +104,7 @@ open class FireStoreClass {
 
     fun registerBoard(activity: BoardActivity, boardInfo: Board) {
         myFireStore.collection(Constants.BOARDS)
-            .document(getCurrUserId())
+            .document()
             .set(boardInfo, SetOptions.merge())
             .addOnSuccessListener {
                 Toast.makeText(activity,
@@ -116,6 +116,26 @@ open class FireStoreClass {
                 Toast.makeText(activity,
                     "Board Creation Failed!", Toast.LENGTH_SHORT).show()
                 activity.boardCreatedSuccessfully()
+            }
+    }
+
+    fun getBoardList(activity: MainActivity) {
+        myFireStore.collection(Constants.BOARDS)
+            .whereArrayContains(Constants.ASSIGNED_TO, getCurrUserId())
+            .get()
+            .addOnSuccessListener {
+                document ->
+                val boardList : ArrayList<Board> = ArrayList()
+                for (i in document.documents) {
+                    val board = i.toObject(Board::class.java)!!
+                    board.documentId = i.id
+                    boardList.add(board)
+                }
+
+                activity.setupBoardListToUI(boardList)
+            }
+            .addOnFailureListener {
+                activity.hideProgressDialog()
             }
     }
 

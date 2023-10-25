@@ -6,13 +6,18 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
+
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.workaholic.R
+import com.example.workaholic.adapters.BoardItemsAdapter
 import com.example.workaholic.databinding.ActivityMainBinding
 import com.example.workaholic.firebase.FireStoreClass
+import com.example.workaholic.models.Board
 import com.example.workaholic.models.User
 import com.example.workaholic.utils.Constants
 import com.google.android.material.navigation.NavigationView.*
@@ -35,12 +40,12 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
 
         binding.navView.setNavigationItemSelectedListener (this)
 
-        FireStoreClass().loadUserData(this)
+        FireStoreClass().loadUserData(this, true)
 
         binding.appBar.btnBoardActivity.setOnClickListener {
             val intent = Intent(this@MainActivity, BoardActivity::class.java)
             intent.putExtra(Constants.NAME, myUserName)
-            startActivity(intent)
+            startUpdateBoardActivityForResult.launch(intent)
         }
     }
 
@@ -85,6 +90,17 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
                 }
         }
 
+    private val startUpdateBoardActivityForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                FireStoreClass().getBoardList(this@MainActivity)
+            }
+            else {
+                Log.e("Cancelled", "Cancelled")
+            }
+        }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.nav_my_profile -> {
@@ -112,10 +128,12 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
         return true
     }
 
-    fun updateNavUserDetails(user : User) {
+    fun updateNavUserDetails(user : User, readBoardList : Boolean) {
         val navUserImage : CircleImageView = findViewById(R.id.nav_user_image)
         var navUserName : TextView = findViewById(R.id.tv_username)
         myUserName = user.name
+
+
 
         Glide
             .with(this)
@@ -125,6 +143,30 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
             .into(navUserImage)
 
         navUserName.text = user.name
+
+        if (readBoardList) {
+            showProgressDialog(resources.getString(R.string.please_wait))
+            FireStoreClass().getBoardList(this@MainActivity)
+        }
+    }
+
+    fun setupBoardListToUI(boardList: ArrayList<Board>) {
+        hideProgressDialog()
+
+        if (boardList.size > 0) {
+            binding.appBar.mainContentForBoard.rvBoardList.visibility = View.VISIBLE
+            binding.appBar.mainContentForBoard.tvNoBoard.visibility = View.GONE
+
+            binding.appBar.mainContentForBoard.rvBoardList.layoutManager = LinearLayoutManager(this)
+            binding.appBar.mainContentForBoard.rvBoardList.setHasFixedSize(true)
+
+            val adapter = BoardItemsAdapter(this, boardList)
+            binding.appBar.mainContentForBoard.rvBoardList.adapter = adapter
+        }
+        else {
+            binding.appBar.mainContentForBoard.rvBoardList.visibility = View.GONE
+            binding.appBar.mainContentForBoard.tvNoBoard.visibility = View.VISIBLE
+        }
     }
 
 

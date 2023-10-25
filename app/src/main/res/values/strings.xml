@@ -32,4 +32,6 @@
     <string name="create_board_message">Tap to create a Board</string>
     <string name="board_name">BOARD NAME</string>
     <string name="btn_create_board">CREATE</string>
+
+    <string name="no_boards_available">No Boards are available!!</string>
 </resources>

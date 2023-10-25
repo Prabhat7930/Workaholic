@@ -1,6 +1,7 @@
 package com.example.workaholic.activity
 
 import android.Manifest
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -65,8 +66,6 @@ class BoardActivity : BaseActivity() {
         }
 
         binding.btnCreateBoard.setOnClickListener {
-
-            // Here if the image is not selected then update the other details of user.
             if (mySelectedImageURI != null) {
                 uploadBoardImage(myUserDetails)
             } else {
@@ -182,6 +181,8 @@ class BoardActivity : BaseActivity() {
 
     fun boardCreatedSuccessfully() {
         hideProgressDialog()
+        setResult(Activity.RESULT_OK)
+
         finish()
     }
     private fun getFileExtension(uri : Uri?): String? {
