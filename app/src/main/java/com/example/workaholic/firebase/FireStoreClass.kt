@@ -146,7 +146,24 @@ open class FireStoreClass {
             .get()
             .addOnSuccessListener {
                 document ->
-                activity.boardDetails(document.toObject(Board::class.java)!!)
+                val board = document.toObject(Board::class.java)!!
+                board.documentId = document.id
+                activity.boardDetails(board)
+            }
+    }
+
+    fun addUpdateTaskList(activity: TaskListActivity, board : Board) {
+        val taskListHashMap = HashMap<String, Any>()
+        taskListHashMap[Constants.TASK_LIST] = board.taskList
+
+        myFireStore.collection(Constants.BOARDS)
+            .document(board.documentId)
+            .update(taskListHashMap)
+            .addOnSuccessListener {
+                activity.addUpdateTaskListSuccess()
+            }
+            .addOnFailureListener {
+                activity.hideProgressDialog()
             }
     }
 

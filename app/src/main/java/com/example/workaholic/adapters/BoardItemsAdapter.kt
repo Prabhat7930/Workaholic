@@ -16,7 +16,7 @@ open class BoardItemsAdapter(private val context : Context,
 
     private var onClickListener : OnClickListener? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return myViewHolder(LayoutInflater.from(context)
+        return MyViewHolder(LayoutInflater.from(context)
             .inflate(R.layout.item_board,
                 parent, false))
     }
@@ -27,7 +27,7 @@ open class BoardItemsAdapter(private val context : Context,
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val model = list[position]
-        if (holder is myViewHolder) {
+        if (holder is MyViewHolder) {
             Glide
                 .with(context)
                 .load(model.image)
@@ -55,5 +55,5 @@ open class BoardItemsAdapter(private val context : Context,
         this.onClickListener = onClickListener
     }
 
-    private class myViewHolder(view: View) : RecyclerView.ViewHolder(view)
+    private class MyViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

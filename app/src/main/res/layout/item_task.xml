@@ -32,7 +32,7 @@
             android:id="@+id/cv_add_task_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="8dp"
             android:elevation="10dp"
             android:visibility="gone"
             app:cardCornerRadius="10dp"
@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/image_contentDescription"
-                    android:padding="10dp"
+                    android:padding="1dp"
                     android:src="@drawable/ic_cancel"
                     tools:ignore="DuplicateSpeakableTextCheck">
 
@@ -74,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/image_contentDescription"
-                    android:padding="10dp"
+                    android:padding="1dp"
                     android:src="@drawable/ic_done">
 
                 </androidx.appcompat.widget.AppCompatImageButton>
@@ -146,7 +146,9 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.8dp"
-                android:background="@color/divider_color">
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/secondary_text_color">
 
             </View>
 
@@ -154,7 +156,7 @@
                 android:id="@+id/cv_edit_task_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="8dp"
                 android:elevation="10dp"
                 android:visibility="gone"
                 app:cardCornerRadius="10dp"
@@ -172,7 +174,7 @@
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
                         android:contentDescription="@string/image_contentDescription"
-                        android:padding="10dp"
+                        android:padding="1dp"
                         android:src="@drawable/ic_cancel">
 
                     </androidx.appcompat.widget.AppCompatImageButton>
@@ -195,7 +197,7 @@
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
                         android:contentDescription="@string/image_contentDescription"
-                        android:padding="10dp"
+                        android:padding="1dp"
                         android:src="@drawable/ic_done">
 
                     </androidx.appcompat.widget.AppCompatImageButton>
@@ -216,7 +218,7 @@
                 android:id="@+id/cv_add_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="8dp"
                 android:elevation="10dp"
                 android:visibility="gone"
                 app:cardCornerRadius="10dp"
@@ -234,7 +236,7 @@
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
                         android:contentDescription="@string/image_contentDescription"
-                        android:padding="10dp"
+                        android:padding="1dp"
                         android:src="@drawable/ic_cancel">
 
                     </androidx.appcompat.widget.AppCompatImageButton>
@@ -257,7 +259,7 @@
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
                         android:contentDescription="@string/image_contentDescription"
-                        android:padding="10dp"
+                        android:padding="1dp"
                         android:src="@drawable/ic_done">
 
                     </androidx.appcompat.widget.AppCompatImageButton>
