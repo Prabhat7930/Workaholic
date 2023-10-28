@@ -41,7 +41,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:background="@color/secondary_text_color">
+        android:background="@android:color/darker_gray">
     </View>
 
 

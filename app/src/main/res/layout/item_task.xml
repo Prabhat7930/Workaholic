@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/image_contentDescription"
-                    android:padding="1dp"
+                    android:padding="10dp"
                     android:src="@drawable/ic_cancel"
                     tools:ignore="DuplicateSpeakableTextCheck">
 
@@ -74,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/image_contentDescription"
-                    android:padding="1dp"
+                    android:padding="10dp"
                     android:src="@drawable/ic_done">
 
                 </androidx.appcompat.widget.AppCompatImageButton>
@@ -174,7 +174,7 @@
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
                         android:contentDescription="@string/image_contentDescription"
-                        android:padding="1dp"
+                        android:padding="10dp"
                         android:src="@drawable/ic_cancel">
 
                     </androidx.appcompat.widget.AppCompatImageButton>
@@ -197,7 +197,7 @@
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
                         android:contentDescription="@string/image_contentDescription"
-                        android:padding="1dp"
+                        android:padding="10dp"
                         android:src="@drawable/ic_done">
 
                     </androidx.appcompat.widget.AppCompatImageButton>
@@ -236,7 +236,7 @@
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
                         android:contentDescription="@string/image_contentDescription"
-                        android:padding="1dp"
+                        android:padding="10dp"
                         android:src="@drawable/ic_cancel">
 
                     </androidx.appcompat.widget.AppCompatImageButton>
@@ -259,7 +259,7 @@
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackground"
                         android:contentDescription="@string/image_contentDescription"
-                        android:padding="1dp"
+                        android:padding="10dp"
                         android:src="@drawable/ic_done">
 
                     </androidx.appcompat.widget.AppCompatImageButton>

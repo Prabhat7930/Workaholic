@@ -1,6 +1,8 @@
 package com.example.workaholic.activity
 
+import android.os.Build
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.workaholic.R
 import com.example.workaholic.adapters.TaskListItemsAdapter
@@ -20,6 +22,10 @@ class TaskListActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityTaskListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.colorAccent)
+        }
 
         if (intent.hasExtra(Constants.DOCUMENT_ID)) {
             boardDocumentId = intent.getStringExtra(Constants.DOCUMENT_ID).toString()

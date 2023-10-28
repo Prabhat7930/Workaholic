@@ -2,6 +2,7 @@ package com.example.workaholic.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -36,6 +38,10 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.colorAccent)
+        }
+
         setupActionBar()
 
         binding.navView.setNavigationItemSelectedListener (this)
@@ -55,7 +61,7 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
         val actionBar = supportActionBar
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true)
-            actionBar.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24_white)
+            actionBar.setHomeAsUpIndicator(R.drawable.baseline_menu_24)
         }
 
         binding.appBar.toolbarMain.setNavigationOnClickListener {
