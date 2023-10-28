@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.example.workaholic.activity
 
 import android.Manifest
@@ -46,7 +44,7 @@ class ProfileActivity : BaseActivity() {
 
         FireStoreClass().loadUserData(this@ProfileActivity)
 
-        binding.userProfileImage.setOnClickListener {
+        binding.ivUserProfile.setOnClickListener {
             if (ContextCompat.checkSelfPermission(this,
                     Manifest.permission.READ_MEDIA_IMAGES) ==
                 PackageManager.PERMISSION_GRANTED) {
@@ -83,7 +81,7 @@ class ProfileActivity : BaseActivity() {
             actionBar.title = resources.getString(R.string.my_profile)
         }
 
-        binding.toolbarProfile.setNavigationOnClickListener {onBackPressed() }
+        binding.toolbarProfile.setNavigationOnClickListener {onBackPressedDispatcher.onBackPressed() }
     }
 
     override fun onRequestPermissionsResult(
@@ -119,7 +117,7 @@ class ProfileActivity : BaseActivity() {
                     .load(mySelectedImageURI)
                     .centerCrop()
                     .placeholder(R.drawable.ic_user_place_holder)
-                    .into(binding.userProfileImage)
+                    .into(binding.ivUserProfile)
             }
             catch (e : IOException) {
                 e.printStackTrace()
@@ -127,7 +125,7 @@ class ProfileActivity : BaseActivity() {
 
         }
         else {
-            Log.d("photo", "not selected")
+            Log.d("Image", "Not Selected")
         }
     }
 
@@ -153,15 +151,15 @@ class ProfileActivity : BaseActivity() {
                     .load(mySelectedImageURI)
                     .centerCrop()
                     .placeholder(R.drawable.ic_user_place_holder)
-                    .into(binding.userProfileImage)
+                    .into(binding.ivUserProfile)
             }
             catch (e : IOException) {
                 e.printStackTrace()
             }
         }
     }*/
-    fun setUserDataInUI (user : User) {
 
+    fun setUserDataInUI (user : User) {
         myUserDetails = user
 
         Glide
@@ -169,12 +167,12 @@ class ProfileActivity : BaseActivity() {
             .load(user.image)
             .centerCrop()
             .placeholder(R.drawable.ic_user_place_holder)
-            .into(binding.userProfileImage)
+            .into(binding.ivUserProfile)
 
-        binding.tvName2.setText(user.name)
-        binding.tvEmail3.setText(user.email)
+        binding.etName2.setText(user.name)
+        binding.etEmail3.setText(user.email)
         if (user.mobileNum != 0L && user.mobileNum.toString().length == 10) {
-            binding.tvMobile.setText(user.mobileNum.toString())
+            binding.etMobile.setText(user.mobileNum.toString())
         }
     }
 
@@ -215,23 +213,23 @@ class ProfileActivity : BaseActivity() {
             changesMade = true
         }
 
-        if (binding.tvName2.text.toString().isNotEmpty() && binding.tvName2.text.toString() != myUserDetails.name) {
-            userHashMap[Constants.NAME] = binding.tvName2.text.toString()
+        if (binding.etName2.text.toString().isNotEmpty() && binding.etName2.text.toString() != myUserDetails.name) {
+            userHashMap[Constants.NAME] = binding.etName2.text.toString()
             changesMade = true
         }
-        else if (binding.tvName2.text.toString().isEmpty()){
+        else if (binding.etName2.text.toString().isEmpty()){
             hideProgressDialog()
             changesMade = false
             Toast.makeText(this@ProfileActivity, "Name cannot be null", Toast.LENGTH_SHORT).show()
         }
 
-        if (binding.tvMobile.text.toString().isNotEmpty() && binding.tvMobile.text.toString() != myUserDetails.mobileNum.toString()
-            && binding.tvMobile.text.toString().length == 10 && binding.tvMobile.text.toString().toLong() != 0L) {
-            userHashMap[Constants.MOBILE] = binding.tvMobile.text.toString().toLong()
+        if (binding.etMobile.text.toString().isNotEmpty() && binding.etMobile.text.toString() != myUserDetails.mobileNum.toString()
+            && binding.etMobile.text.toString().length == 10 && binding.etMobile.text.toString().toLong() != 0L) {
+            userHashMap[Constants.MOBILE] = binding.etMobile.text.toString().toLong()
             changesMade = true
         }
-        else if (binding.tvMobile.text.toString().isEmpty() || binding.tvMobile.text.toString().length != 10
-            || binding.tvMobile.text.toString().toLong() == 0L) {
+        else if (binding.etMobile.text.toString().isEmpty() || binding.etMobile.text.toString().length != 10
+            || binding.etMobile.text.toString().toLong() == 0L) {
             hideProgressDialog()
             changesMade = false
             Toast.makeText(this@ProfileActivity, "Mobile number cannot be left empty", Toast.LENGTH_SHORT).show()
@@ -251,7 +249,6 @@ class ProfileActivity : BaseActivity() {
     fun profileUpdateSuccess() {
         hideProgressDialog()
         setResult(Activity.RESULT_OK)
-
         finish()
     }
 }

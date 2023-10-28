@@ -85,7 +85,7 @@ class BoardActivity : BaseActivity() {
             actionBar.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24_white)
             actionBar.title = resources.getString(R.string.my_profile)
         }
-        binding.toolbarBoardActivity.setNavigationOnClickListener {onBackPressed()}
+        binding.toolbarBoardActivity.setNavigationOnClickListener {onBackPressedDispatcher.onBackPressed()}
     }
 
     override fun onRequestPermissionsResult(
@@ -128,23 +128,28 @@ class BoardActivity : BaseActivity() {
 
         }
         else {
-            Log.d("photo", "not selected")
+            Log.d("Image", "Not selected")
         }
     }
 
     private fun createBoard() {
         val assignedUsersArrayList: ArrayList<String> = ArrayList()
-        assignedUsersArrayList.add(getCurrentUserID()) // adding the current user id.
 
-        // Creating the instance of the Board and adding the values as per parameters.
-        val board = Board(
-            binding.tvBoardName.text.toString(),
-            myBoardImageURL,
-            myUserName,
-            assignedUsersArrayList
-        )
+        if (binding.etBoardName.text.toString() != null) {
+            assignedUsersArrayList.add(getCurrentUserID())
 
-        FireStoreClass().registerBoard(this@BoardActivity, board)
+            val board = Board(
+                binding.etBoardName.text.toString(),
+                myBoardImageURL,
+                myUserName,
+                assignedUsersArrayList
+            )
+
+            FireStoreClass().registerBoard(this@BoardActivity, board)
+        }
+        else {
+            Toast.makeText(this@BoardActivity, "Board Name cannot be empty!", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun uploadBoardImage(user : User) {
@@ -182,7 +187,6 @@ class BoardActivity : BaseActivity() {
     fun boardCreatedSuccessfully() {
         hideProgressDialog()
         setResult(Activity.RESULT_OK)
-
         finish()
     }
     private fun getFileExtension(uri : Uri?): String? {

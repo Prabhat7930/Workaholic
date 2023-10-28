@@ -15,19 +15,18 @@ class TaskListActivity : BaseActivity() {
     private lateinit var binding : ActivityTaskListBinding
 
     private lateinit var myBoardDetails : Board
+    private lateinit var boardDocumentId : String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTaskListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var boardDocumentID = ""
-
         if (intent.hasExtra(Constants.DOCUMENT_ID)) {
-            boardDocumentID = intent.getStringExtra(Constants.DOCUMENT_ID).toString()
+            boardDocumentId = intent.getStringExtra(Constants.DOCUMENT_ID).toString()
         }
 
         showProgressDialog(resources.getString(R.string.please_wait))
-        FireStoreClass().getBoardDetails(this@TaskListActivity, boardDocumentID)
+        FireStoreClass().getBoardDetails(this@TaskListActivity, boardDocumentId)
     }
 
 
@@ -41,14 +40,14 @@ class TaskListActivity : BaseActivity() {
             actionBar.title = myBoardDetails.name
         }
 
-        binding.toolbarTask.setNavigationOnClickListener {onBackPressed() }
+        binding.toolbarTask.setNavigationOnClickListener {onBackPressedDispatcher.onBackPressed() }
     }
     fun boardDetails(board : Board) {
         myBoardDetails = board
         hideProgressDialog()
         setupActionBar()
 
-        val addTaskList = Task(resources.getString(R.string.add_list))
+        val addTaskList = Task(resources.getString(R.string.add_task))
         board.taskList.add(addTaskList)
 
         binding.rvTaskList.layoutManager = LinearLayoutManager(this,
@@ -59,13 +58,6 @@ class TaskListActivity : BaseActivity() {
         val adapter = TaskListItemsAdapter(this@TaskListActivity,
             board.taskList)
         binding.rvTaskList.adapter = adapter
-    }
-
-    fun addUpdateTaskListSuccess() {
-        hideProgressDialog()
-
-        showProgressDialog(resources.getString(R.string.please_wait))
-        FireStoreClass().getBoardDetails(this@TaskListActivity, myBoardDetails.documentId)
     }
 
     fun createTaskList(taskListName : String) {
@@ -81,6 +73,11 @@ class TaskListActivity : BaseActivity() {
         FireStoreClass().addUpdateTaskList(this@TaskListActivity, myBoardDetails)
     }
 
+    fun addUpdateTaskListSuccess() {
+        hideProgressDialog()
 
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FireStoreClass().getBoardDetails(this@TaskListActivity, myBoardDetails.documentId)
+    }
 
 }

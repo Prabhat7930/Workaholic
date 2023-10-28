@@ -1,11 +1,11 @@
-@file:Suppress("DEPRECATION")
-
 package com.example.workaholic.activity
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
+import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import com.example.workaholic.R
@@ -27,22 +27,22 @@ class SignInActivity : BaseActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        }
+        else {
+            @Suppress("DEPRECATION")
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
+
+        setupActionBar()
 
         binding.btnSignIn2.setOnClickListener {
             loginUser()
         }
-
-        setupActionBar()
-    }
-
-    fun loginSuccess(user : User) {
-        hideProgressDialog()
-        startActivity(Intent(this@SignInActivity, MainActivity::class.java))
-        finish()
     }
 
     private fun setupActionBar() {
@@ -54,29 +54,23 @@ class SignInActivity : BaseActivity() {
             actionBar.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24)
         }
 
-        binding.toolbarSignIn.setNavigationOnClickListener { onBackPressed() }
-
-        binding.btnSignIn2.setOnClickListener {
-            loginUser()
-        }
+        binding.toolbarSignIn.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
     }
 
     private fun loginUser() {
-        val email : String = binding.tvEmail2.text.toString().trim {it <= ' '}
-        val password : String = binding.tvPassword2.text.toString().trim {it <= ' '}
+        val email : String = binding.etEmail2.text.toString().trim {it <= ' '}
+        val password : String = binding.etPassword2.text.toString().trim {it <= ' '}
 
         if (validateForm(email, password)) {
             showProgressDialog(resources.getString(R.string.please_wait))
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) {task ->
                     if (task.isSuccessful) {
-                        Log.d("Sign in", "signInWithEmail:success")
                         val user = auth.currentUser
                         FireStoreClass().loadUserData(this@SignInActivity)
                     }
                     else {
                         hideProgressDialog()
-                        Log.w("Sign in", "signInWithEmail:failure", task.exception)
                         Toast.makeText(baseContext, "Authentication failed.",
                             Toast.LENGTH_SHORT).show()
                     }
@@ -98,5 +92,11 @@ class SignInActivity : BaseActivity() {
                 true
             }
         }
+    }
+
+    fun loginSuccess(user : User) {
+        hideProgressDialog()
+        startActivity(Intent(this@SignInActivity, MainActivity::class.java))
+        finish()
     }
 }

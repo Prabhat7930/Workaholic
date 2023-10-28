@@ -27,11 +27,8 @@ open class FireStoreClass {
             .addOnSuccessListener {
                 activity.userRegisteredSuccess()
             }.addOnFailureListener {
-                
-                e ->
-                Log.e(activity.javaClass.simpleName,
-                    "Error during Signing Up")
-
+                activity.hideProgressDialog()
+                Log.e(activity.javaClass.simpleName, "Error during Signing Up")
             }
     }
 
@@ -66,7 +63,6 @@ open class FireStoreClass {
                 }
 
             }.addOnFailureListener {
-                    e ->
                 when(activity) {
                     is SignInActivity -> {
                         activity.hideProgressDialog()
@@ -116,7 +112,6 @@ open class FireStoreClass {
                 activity.hideProgressDialog()
                 Toast.makeText(activity,
                     "Board Creation Failed!", Toast.LENGTH_SHORT).show()
-                activity.boardCreatedSuccessfully()
             }
     }
 
@@ -128,8 +123,9 @@ open class FireStoreClass {
                 document ->
                 val boardList : ArrayList<Board> = ArrayList()
                 for (i in document.documents) {
-                    val board = i.toObject(Board::class.java)!!
+                    var board = i.toObject(Board::class.java)!!
                     board.documentId = i.id
+                    Log.w(board.documentId, i.id)
                     boardList.add(board)
                 }
 
@@ -140,9 +136,9 @@ open class FireStoreClass {
             }
     }
 
-    fun getBoardDetails(activity : TaskListActivity, documentID : String) {
+    fun getBoardDetails(activity : TaskListActivity, documentId : String) {
         myFireStore.collection(Constants.BOARDS)
-            .document(documentID)
+            .document(documentId)
             .get()
             .addOnSuccessListener {
                 document ->

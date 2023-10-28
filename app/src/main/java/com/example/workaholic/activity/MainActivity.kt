@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -39,7 +40,7 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
 
         binding.navView.setNavigationItemSelectedListener (this)
 
-        FireStoreClass().loadUserData(this, true)
+        FireStoreClass().loadUserData(this@MainActivity, true)
 
         binding.appBar.btnBoardActivity.setOnClickListener {
             val intent = Intent(this@MainActivity, BoardActivity::class.java)
@@ -50,7 +51,12 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
 
     private fun setupActionBar() {
         setSupportActionBar(binding.appBar.toolbarMain)
-        binding.appBar.toolbarMain.setNavigationIcon(R.drawable.baseline_menu_24)
+
+        val actionBar = supportActionBar
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.baseline_arrow_back_24_white)
+        }
 
         binding.appBar.toolbarMain.setNavigationOnClickListener {
             toggleDrawer()
@@ -68,7 +74,6 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START)
         }
@@ -85,7 +90,7 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
                     FireStoreClass().loadUserData(this@MainActivity)
                 }
                 else {
-                    Log.e("Cancelled", "Cancelled")
+                    Log.e("Update Profile", "Cancelled")
                 }
         }
 
@@ -96,21 +101,21 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
                 FireStoreClass().getBoardList(this@MainActivity)
             }
             else {
-                Log.e("Cancelled", "Cancelled")
+                Log.e("Update Board", "Cancelled")
             }
         }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             R.id.nav_my_profile -> {
-                Handler().postDelayed({
+                Handler(Looper.getMainLooper()).postDelayed({
                     startUpdateActivityForResult.launch(Intent(this@MainActivity, ProfileActivity::class.java))
                 }, 300)
 
             }
             R.id.nav_sign_out -> {
 
-                Handler().postDelayed({
+                Handler(Looper.getMainLooper()).postDelayed({
                     FirebaseAuth.getInstance().signOut()
 
                     val intent = Intent(this@MainActivity, LoginActivity::class.java)
@@ -132,16 +137,14 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
         var navUserName : TextView = findViewById(R.id.tv_username)
         myUserName = user.name
 
-
-
         Glide
-            .with(this)
+            .with(this@MainActivity)
             .load(user.image)
             .centerCrop()
             .placeholder(R.drawable.ic_user_place_holder)
             .into(navUserImage)
 
-        navUserName.text = user.name
+        navUserName.text = myUserName
 
         if (readBoardList) {
             showProgressDialog(resources.getString(R.string.please_wait))

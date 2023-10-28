@@ -1,35 +1,43 @@
-@file:Suppress("DEPRECATION")
-
 package com.example.workaholic.activity
 
 import android.content.Intent
 import android.graphics.Typeface
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
+import android.view.WindowInsets
 import android.view.WindowManager
-import android.widget.TextView
-import com.example.workaholic.R
+import com.example.workaholic.databinding.ActivitySplashScreenBinding
 import com.example.workaholic.firebase.FireStoreClass
 
 
 class Splashscreen : AppCompatActivity() {
+
+    private lateinit var binding : ActivitySplashScreenBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash_screen)
+        binding = ActivitySplashScreenBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val appName : TextView = findViewById(R.id.tv_app_name)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+        }
+        else {
+            @Suppress("DEPRECATION")
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN
+            )
+        }
 
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
 
         val tFace : Typeface = Typeface.createFromAsset(assets, "splashFont.ttf")
-        appName.typeface = tFace
+        binding.tvAppName.typeface = tFace
 
-        Handler().postDelayed({
-
+        Handler(Looper.getMainLooper()).postDelayed({
             var currUserId = FireStoreClass().getCurrUserId()
 
             if (currUserId.isNotEmpty()) {
@@ -39,6 +47,7 @@ class Splashscreen : AppCompatActivity() {
                 startActivity(Intent(this, LoginActivity::class.java))
             }
             finish()
+
         }, 1000)
     }
 }

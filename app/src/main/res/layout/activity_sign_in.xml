@@ -15,7 +15,7 @@
         android:layout_height="?attr/actionBarSize">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_text3"
+            android:id="@+id/tv_text5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
@@ -35,6 +35,7 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_text6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -73,7 +74,7 @@
                     android:textColorHint="@color/black">
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/tv_email2"
+                        android:id="@+id/et_email2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/black"
@@ -96,7 +97,7 @@
                     android:textColorHint="@color/black">
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/tv_password2"
+                        android:id="@+id/et_password2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/black"

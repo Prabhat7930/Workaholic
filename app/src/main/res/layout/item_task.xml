@@ -20,7 +20,7 @@
             android:foreground="?attr/selectableItemBackground"
             android:gravity="center"
             android:padding="5dp"
-            android:text="@string/add_list"
+            android:text="@string/add_task"
             android:textColor="#5C6BC0"
             android:textSize="20sp"
             android:visibility="gone"
@@ -29,7 +29,7 @@
         </androidx.appcompat.widget.AppCompatTextView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cv_add_task_list"
+            android:id="@+id/cv_add_task_list_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"

@@ -35,8 +35,9 @@ open class BoardItemsAdapter(private val context : Context,
                 .placeholder(R.drawable.ic_user_place_holder)
                 .into(holder.itemView.findViewById(R.id.iv_board_list_image))
 
-            holder.itemView.findViewById<TextView>(R.id.tv_board_name2).text = model.name
-            holder.itemView.findViewById<TextView>(R.id.tv_board_created_by).text = "Created by : ${model.createdBy}"
+            holder.itemView.findViewById<TextView>(R.id.tv_board_name).text = model.name
+            var creator = "Created by : ${model.createdBy}"
+            holder.itemView.findViewById<TextView>(R.id.tv_board_created_by).text = creator
 
             holder.itemView.setOnClickListener {
                 if (onClickListener != null) {

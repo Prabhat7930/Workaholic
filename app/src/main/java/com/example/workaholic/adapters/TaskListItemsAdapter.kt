@@ -21,7 +21,7 @@ open class TaskListItemsAdapter(private val context : Context,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_task, parent, false)
         val layoutParams = LinearLayout.LayoutParams(
-            (parent.width * 0.8).toInt(), LinearLayout.LayoutParams.WRAP_CONTENT
+            (parent.width * 0.9).toInt(), LinearLayout.LayoutParams.WRAP_CONTENT
         )
         layoutParams.setMargins(
             (15.toDp().toPx()), 0, (40.toDp().toPx()), 0)
@@ -48,12 +48,12 @@ open class TaskListItemsAdapter(private val context : Context,
             holder.itemView.findViewById<TextView>(R.id.tv_task_list_title).text = model.title
             holder.itemView.findViewById<TextView>(R.id.tv_add_task).setOnClickListener {
                 holder.itemView.findViewById<TextView>(R.id.tv_add_task).visibility = View.GONE
-                holder.itemView.findViewById<CardView>(R.id.cv_add_task_list).visibility = View.VISIBLE
+                holder.itemView.findViewById<CardView>(R.id.cv_add_task_list_name).visibility = View.VISIBLE
             }
 
             holder.itemView.findViewById<ImageButton>(R.id.ibtn_close_list).setOnClickListener {
                 holder.itemView.findViewById<TextView>(R.id.tv_add_task).visibility = View.VISIBLE
-                holder.itemView.findViewById<CardView>(R.id.cv_add_task_list).visibility = View.GONE
+                holder.itemView.findViewById<CardView>(R.id.cv_add_task_list_name).visibility = View.GONE
             }
 
             holder.itemView.findViewById<ImageButton>(R.id.ibtn_done_list).setOnClickListener {
