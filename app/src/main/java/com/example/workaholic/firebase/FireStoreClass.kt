@@ -5,6 +5,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.workaholic.activity.BoardActivity
 import com.example.workaholic.activity.MainActivity
+import com.example.workaholic.activity.MembersActivity
 import com.example.workaholic.activity.ProfileActivity
 import com.example.workaholic.activity.SignInActivity
 import com.example.workaholic.activity.SignUpActivity
@@ -15,6 +16,7 @@ import com.example.workaholic.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.toObject
 
 open class FireStoreClass {
 
@@ -157,6 +159,27 @@ open class FireStoreClass {
             .update(taskListHashMap)
             .addOnSuccessListener {
                 activity.addUpdateTaskListSuccess()
+            }
+            .addOnFailureListener {
+                activity.hideProgressDialog()
+            }
+    }
+
+    fun getAssignedMembersListDetails(activity : MembersActivity, assignedTo : ArrayList<String>) {
+        myFireStore.collection(Constants.USERS)
+            .whereIn(Constants.ID, assignedTo)
+            .get()
+            .addOnSuccessListener {
+                document ->
+
+                val usersList : ArrayList<User> = ArrayList()
+
+                for (i in document.documents) {
+                    val user = i.toObject(User::class.java)!!
+                    usersList.add(user)
+                }
+
+                activity.setupMemberList(usersList)
             }
             .addOnFailureListener {
                 activity.hideProgressDialog()
