@@ -16,7 +16,6 @@ import com.example.workaholic.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.google.firebase.firestore.toObject
 
 open class FireStoreClass {
 
@@ -180,6 +179,41 @@ open class FireStoreClass {
                 }
 
                 activity.setupMemberList(usersList)
+            }
+            .addOnFailureListener {
+                activity.hideProgressDialog()
+            }
+    }
+
+    fun getMembersDetails(activity : MembersActivity, email : String) {
+        myFireStore.collection(Constants.USERS)
+            .whereEqualTo(Constants.EMAIL, email)
+            .get()
+            .addOnSuccessListener {
+                document ->
+                if (document.documents.size > 0) {
+                    val user = document.documents[0].toObject(User::class.java)!!
+                    activity.memberDetails(user)
+                }
+                else {
+                    activity.hideProgressDialog()
+                    activity.showErrorSnackBar("No such member found")
+                }
+            }
+            .addOnFailureListener {
+                activity.hideProgressDialog()
+            }
+    }
+
+    fun assignMemberToBoard(activity: MembersActivity, board : Board, user : User) {
+        val assignedToHashMap = HashMap<String, Any>()
+        assignedToHashMap[Constants.ASSIGNED_TO] = board.assignedTo
+
+        myFireStore.collection(Constants.BOARDS)
+            .document(board.documentId)
+            .update(assignedToHashMap)
+            .addOnSuccessListener {
+                activity.memberAssignedSuccess(user)
             }
             .addOnFailureListener {
                 activity.hideProgressDialog()

@@ -140,7 +140,8 @@ class BoardActivity : BaseActivity() {
     private fun createBoard() {
         val assignedUsersArrayList: ArrayList<String> = ArrayList()
 
-        if (binding.etBoardName.text.toString() != null) {
+        if (binding.etBoardName.text.toString() != "") {
+            Toast.makeText(this@BoardActivity, "Board Name not empty", Toast.LENGTH_SHORT).show()
             assignedUsersArrayList.add(getCurrentUserID())
 
             val board = Board(
@@ -153,6 +154,7 @@ class BoardActivity : BaseActivity() {
             FireStoreClass().registerBoard(this@BoardActivity, board)
         }
         else {
+            hideProgressDialog()
             Toast.makeText(this@BoardActivity, "Board Name cannot be empty!", Toast.LENGTH_SHORT).show()
         }
     }

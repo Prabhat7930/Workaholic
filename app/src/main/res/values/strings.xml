@@ -42,4 +42,8 @@
     <string name="add_task">Add Task</string>
 
     <string name="members">Members</string>
+
+    <string name="add_member">Add Member</string>
+    <string name="cancel">CANCEL</string>
+    <string name="add">ADD</string>
 </resources>

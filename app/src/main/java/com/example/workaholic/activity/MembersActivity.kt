@@ -1,7 +1,13 @@
 package com.example.workaholic.activity
 
+import android.app.Dialog
 import android.os.Build
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.workaholic.R
@@ -17,6 +23,7 @@ class MembersActivity : BaseActivity() {
     private lateinit var binding : ActivityMembersBinding
 
     private lateinit var myBoardDetails : Board
+    private lateinit var myAssignedMembersList : ArrayList<User>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +58,22 @@ class MembersActivity : BaseActivity() {
         binding.toolbarMember.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_add_member, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.menu_add_members -> {
+                dialogToSearchMembers()
+            }
+        }
+        return true
+    }
+
     fun setupMemberList(list : ArrayList<User>) {
+        myAssignedMembersList = list
         hideProgressDialog()
 
         binding.rvMembersList.layoutManager = LinearLayoutManager(this)
@@ -59,5 +81,38 @@ class MembersActivity : BaseActivity() {
 
         val adapter = MemberListItemAdapter(this, list)
         binding.rvMembersList.adapter = adapter
+    }
+
+    fun memberDetails(user : User) {
+        myBoardDetails.assignedTo.add(user.id)
+        FireStoreClass().assignMemberToBoard(this@MembersActivity, myBoardDetails, user)
+    }
+
+    fun memberAssignedSuccess(user : User) {
+        hideProgressDialog()
+        myAssignedMembersList.add(user)
+        setupMemberList(myAssignedMembersList)
+    }
+
+    private fun dialogToSearchMembers() {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_search_member)
+        dialog.findViewById<TextView>(R.id.tv_add).setOnClickListener {
+            val email = dialog.findViewById<EditText>(R.id.et_search_email).text.toString()
+
+            if (email.isNotEmpty()) {
+                dialog.dismiss()
+                showProgressDialog(resources.getString(R.string.please_wait))
+                FireStoreClass().getMembersDetails(this@MembersActivity, email)
+            }
+            else {
+                Toast.makeText(this, "Please enter a email to search", Toast.LENGTH_SHORT).show()
+            }
+        }
+        dialog.findViewById<TextView>(R.id.tv_cancel).setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+
     }
 }
