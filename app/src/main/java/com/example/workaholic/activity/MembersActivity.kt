@@ -1,5 +1,6 @@
 package com.example.workaholic.activity
 
+import android.app.Activity
 import android.app.Dialog
 import android.os.Build
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.view.MenuItem
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import android.window.OnBackInvokedDispatcher
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.workaholic.R
@@ -24,6 +26,7 @@ class MembersActivity : BaseActivity() {
 
     private lateinit var myBoardDetails : Board
     private lateinit var myAssignedMembersList : ArrayList<User>
+    private var anyChangesMade : Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,7 +94,16 @@ class MembersActivity : BaseActivity() {
     fun memberAssignedSuccess(user : User) {
         hideProgressDialog()
         myAssignedMembersList.add(user)
+
+        anyChangesMade = true
         setupMemberList(myAssignedMembersList)
+    }
+
+    override fun getOnBackInvokedDispatcher(): OnBackInvokedDispatcher {
+        if (anyChangesMade) {
+            setResult(Activity.RESULT_OK)
+        }
+        return super.getOnBackInvokedDispatcher()
     }
 
     private fun dialogToSearchMembers() {

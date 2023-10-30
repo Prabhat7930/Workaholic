@@ -117,6 +117,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="7dp"
                     android:layout_marginEnd="5dp"
+                    app:endIconMode="password_toggle"
                     android:textColorHint="@color/black">
 
                     <androidx.appcompat.widget.AppCompatEditText

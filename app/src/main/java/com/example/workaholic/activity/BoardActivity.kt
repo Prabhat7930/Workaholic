@@ -137,28 +137,6 @@ class BoardActivity : BaseActivity() {
         }
     }
 
-    private fun createBoard() {
-        val assignedUsersArrayList: ArrayList<String> = ArrayList()
-
-        if (binding.etBoardName.text.toString() != "") {
-            Toast.makeText(this@BoardActivity, "Board Name not empty", Toast.LENGTH_SHORT).show()
-            assignedUsersArrayList.add(getCurrentUserID())
-
-            val board = Board(
-                binding.etBoardName.text.toString(),
-                myBoardImageURL,
-                myUserName,
-                assignedUsersArrayList
-            )
-
-            FireStoreClass().registerBoard(this@BoardActivity, board)
-        }
-        else {
-            hideProgressDialog()
-            Toast.makeText(this@BoardActivity, "Board Name cannot be empty!", Toast.LENGTH_SHORT).show()
-        }
-    }
-
     private fun uploadBoardImage(user : User) {
         showProgressDialog(resources.getString(R.string.please_wait))
 
@@ -185,6 +163,28 @@ class BoardActivity : BaseActivity() {
 
                 hideProgressDialog()
             }
+    }
+
+    private fun createBoard() {
+        val assignedUsersArrayList: ArrayList<String> = ArrayList()
+
+        if (binding.etBoardName.text.toString() != "") {
+            Toast.makeText(this@BoardActivity, "Board Name not empty", Toast.LENGTH_SHORT).show()
+            assignedUsersArrayList.add(getCurrentUserID())
+
+            val board = Board(
+                binding.etBoardName.text.toString(),
+                myBoardImageURL,
+                myUserName,
+                assignedUsersArrayList
+            )
+
+            FireStoreClass().registerBoard(this@BoardActivity, board)
+        }
+        else {
+            hideProgressDialog()
+            Toast.makeText(this@BoardActivity, "Board Name cannot be empty!", Toast.LENGTH_SHORT).show()
+        }
     }
 
     fun setupForUser(user : User) {

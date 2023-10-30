@@ -46,4 +46,8 @@
     <string name="add_member">Add Member</string>
     <string name="cancel">CANCEL</string>
     <string name="add">ADD</string>
+
+    <string name="card_name">Card Name</string>
+    <string name="label_color">Label Color</string>
+    <string name="due_date">Due Date</string>
 </resources>

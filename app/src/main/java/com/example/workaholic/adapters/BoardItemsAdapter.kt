@@ -11,7 +11,8 @@ import com.example.workaholic.R
 import com.example.workaholic.models.Board
 
 open class BoardItemsAdapter(private val context : Context,
-    private var list : ArrayList<Board>) :
+    private var list : ArrayList<Board>,
+    /*private var userList : ArrayList<User>*/) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     private var onClickListener : OnClickListener? = null

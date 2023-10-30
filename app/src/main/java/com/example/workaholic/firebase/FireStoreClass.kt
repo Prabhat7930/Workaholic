@@ -126,11 +126,10 @@ open class FireStoreClass {
                 for (i in document.documents) {
                     var board = i.toObject(Board::class.java)!!
                     board.documentId = i.id
-                    Log.w(board.documentId, i.id)
                     boardList.add(board)
                 }
-
                 activity.setupBoardListToUI(boardList)
+
             }
             .addOnFailureListener {
                 activity.hideProgressDialog()

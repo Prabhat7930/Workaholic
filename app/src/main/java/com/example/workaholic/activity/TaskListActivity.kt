@@ -1,10 +1,13 @@
 package com.example.workaholic.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.workaholic.R
@@ -63,11 +66,23 @@ class TaskListActivity : BaseActivity() {
             R.id.menu_members -> {
                 val intent = Intent(this@TaskListActivity, MembersActivity::class.java)
                 intent.putExtra(Constants.BOARD_DETAIL, myBoardDetails)
-                startActivity(intent)
+                startUpdateMembersActivity.launch(intent)
             }
         }
         return true
     }
+
+    private val startUpdateMembersActivity =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                showProgressDialog(resources.getString(R.string.please_wait))
+                FireStoreClass().getBoardDetails(this@TaskListActivity, boardDocumentId)
+            }
+            else {
+                Log.e("Update Members", "Cancelled")
+            }
+        }
 
     fun boardDetails(board : Board) {
         myBoardDetails = board

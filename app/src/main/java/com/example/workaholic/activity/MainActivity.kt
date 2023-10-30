@@ -31,6 +31,7 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
     private lateinit var binding : ActivityMainBinding
 
     private lateinit var myUserName : String
+    private lateinit var myUser: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -139,6 +140,7 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
     }
 
     fun updateNavUserDetails(user : User, readBoardList : Boolean) {
+        myUser = user
         val navUserImage : CircleImageView = findViewById(R.id.nav_user_image)
         var navUserName : TextView = findViewById(R.id.tv_username)
         myUserName = user.name
@@ -170,6 +172,7 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
 
             val adapter = BoardItemsAdapter(this, boardList)
             binding.appBar.mainContentForBoard.rvBoardList.adapter = adapter
+
 
             adapter.setOnClickListener(object : BoardItemsAdapter.OnClickListener {
                 override fun onCLick(position: Int, model: Board) {
