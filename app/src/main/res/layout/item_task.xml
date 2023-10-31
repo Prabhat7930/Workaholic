@@ -52,7 +52,7 @@
                     android:contentDescription="@string/image_contentDescription"
                     android:padding="10dp"
                     android:src="@drawable/ic_cancel"
-                    tools:ignore="DuplicateSpeakableTextCheck">
+                    tools:ignore="DuplicateSpeakableTextCheck,TouchTargetSizeCheck,ImageContrastCheck">
 
                 </androidx.appcompat.widget.AppCompatImageButton>
 
@@ -75,7 +75,8 @@
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/image_contentDescription"
                     android:padding="10dp"
-                    android:src="@drawable/ic_done">
+                    android:src="@drawable/ic_done"
+                    tools:ignore="TouchTargetSizeCheck">
 
                 </androidx.appcompat.widget.AppCompatImageButton>
 
@@ -125,7 +126,8 @@
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/image_contentDescription"
                     android:padding="10dp"
-                    android:src="@drawable/ic_edit">
+                    android:src="@drawable/ic_edit"
+                    tools:ignore="TouchTargetSizeCheck">
 
                 </androidx.appcompat.widget.AppCompatImageButton>
 
@@ -137,7 +139,7 @@
                     android:contentDescription="@string/image_contentDescription"
                     android:padding="10dp"
                     android:src="@drawable/ic_delete"
-                    tools:ignore="ImageContrastCheck">
+                    tools:ignore="ImageContrastCheck,TouchTargetSizeCheck">
 
                 </androidx.appcompat.widget.AppCompatImageButton>
 
@@ -175,7 +177,8 @@
                         android:background="?attr/selectableItemBackground"
                         android:contentDescription="@string/image_contentDescription"
                         android:padding="10dp"
-                        android:src="@drawable/ic_cancel">
+                        android:src="@drawable/ic_cancel"
+                        tools:ignore="TouchTargetSizeCheck,ImageContrastCheck">
 
                     </androidx.appcompat.widget.AppCompatImageButton>
 
@@ -198,7 +201,8 @@
                         android:background="?attr/selectableItemBackground"
                         android:contentDescription="@string/image_contentDescription"
                         android:padding="10dp"
-                        android:src="@drawable/ic_done">
+                        android:src="@drawable/ic_done"
+                        tools:ignore="TouchTargetSizeCheck">
 
                     </androidx.appcompat.widget.AppCompatImageButton>
 
@@ -237,7 +241,8 @@
                         android:background="?attr/selectableItemBackground"
                         android:contentDescription="@string/image_contentDescription"
                         android:padding="10dp"
-                        android:src="@drawable/ic_cancel">
+                        android:src="@drawable/ic_cancel"
+                        tools:ignore="TouchTargetSizeCheck,ImageContrastCheck">
 
                     </androidx.appcompat.widget.AppCompatImageButton>
 
@@ -260,7 +265,8 @@
                         android:background="?attr/selectableItemBackground"
                         android:contentDescription="@string/image_contentDescription"
                         android:padding="10dp"
-                        android:src="@drawable/ic_done">
+                        android:src="@drawable/ic_done"
+                        tools:ignore="TouchTargetSizeCheck">
 
                     </androidx.appcompat.widget.AppCompatImageButton>
 

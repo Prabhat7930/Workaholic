@@ -2,6 +2,7 @@ package com.example.workaholic.adapters
 
 import android.content.Context
 import android.content.res.Resources
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.workaholic.R
 import com.example.workaholic.activity.TaskListActivity
+import com.example.workaholic.models.Cards
 import com.example.workaholic.models.Task
 
 open class TaskListItemsAdapter(private val context : Context,
@@ -36,10 +38,10 @@ open class TaskListItemsAdapter(private val context : Context,
         return list.size
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val model = list[position]
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, taskPosition : Int) {
+        val model = list[taskPosition]
         if (holder is MyViewHolder) {
-            if (position == list.size - 1) {
+            if (taskPosition == list.size - 1) {
                 holder.itemView.findViewById<TextView>(R.id.tv_add_task).visibility = View.VISIBLE
                 holder.itemView.findViewById<LinearLayout>(R.id.ll_task_item).visibility = View.GONE
             }
@@ -88,7 +90,7 @@ open class TaskListItemsAdapter(private val context : Context,
 
                 if (listName.isNotEmpty()) {
                     if (context is TaskListActivity) {
-                        context.updateTaskList(position, listName, model)
+                        context.updateTaskList(taskPosition, listName, model)
                     }
                 }
                 else {
@@ -97,7 +99,7 @@ open class TaskListItemsAdapter(private val context : Context,
             }
 
             holder.itemView.findViewById<ImageButton>(R.id.ibtn_delete_list).setOnClickListener {
-                alertDialogForListDeletion(position, model.title)
+                alertDialogForListDeletion(taskPosition, model.title)
             }
 
             holder.itemView.findViewById<TextView>(R.id.tv_add_card).setOnClickListener {
@@ -110,7 +112,7 @@ open class TaskListItemsAdapter(private val context : Context,
 
                 if (cardName.isNotEmpty()) {
                     if (context is TaskListActivity) {
-                        context.addCardToTaskList(position, cardName)
+                        context.addCardToTaskList(taskPosition, cardName)
                     }
                 }
                 else {
@@ -125,28 +127,38 @@ open class TaskListItemsAdapter(private val context : Context,
 
             holder.itemView.findViewById<RecyclerView>(R.id.rv_card_list).layoutManager = LinearLayoutManager(context)
             holder.itemView.findViewById<RecyclerView>(R.id.rv_card_list).setHasFixedSize(true)
+
             val adapter = CardListItemsAdapter(context, model.cards)
             holder.itemView.findViewById<RecyclerView>(R.id.rv_card_list).adapter = adapter
+
+            adapter.setOnClickListener(object : CardListItemsAdapter.OnClickListener {
+                override fun onClick(cardPosition: Int, model : Cards) {
+                    if (context is TaskListActivity) {
+                        context.cardDetails(holder.adapterPosition, cardPosition, model)
+                    }
+                }
+            })
+
 
         }
     }
 
-    private fun alertDialogForListDeletion(position : Int, title : String) {
+    private fun alertDialogForListDeletion(taskPosition : Int, title : String) {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Alert")
 
         builder.setMessage("Are you sure you want to delete $title.")
         builder.setIcon(android.R.drawable.ic_dialog_alert)
 
-        builder.setPositiveButton("Yes") { dialogInterface, which ->
+        builder.setPositiveButton("Yes") { dialogInterface, _ ->
             dialogInterface.dismiss()
 
             if (context is TaskListActivity) {
-                context.deleteTaskList(position)
+                context.deleteTaskList(taskPosition)
             }
         }
 
-        builder.setNegativeButton("No") { dialogInterface, which ->
+        builder.setNegativeButton("No") { dialogInterface, _ ->
             dialogInterface.dismiss()
         }
 

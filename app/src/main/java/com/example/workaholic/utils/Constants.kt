@@ -14,8 +14,10 @@ object Constants {
     const val DOCUMENT_ID : String = "documentId"
 
     const val TASK_LIST : String = "taskList"
+    const val CARD_LIST : String = "cardList"
 
     const val BOARD_DETAIL : String = "board_detail"
     const val ID : String = "id"
+    const val CARD_NAME : String = "card_name"
 
 }

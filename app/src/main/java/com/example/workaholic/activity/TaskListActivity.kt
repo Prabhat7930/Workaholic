@@ -97,8 +97,7 @@ class TaskListActivity : BaseActivity() {
 
         binding.rvTaskList.setHasFixedSize(true)
 
-        val adapter = TaskListItemsAdapter(this@TaskListActivity,
-            board.taskList)
+        val adapter = TaskListItemsAdapter(this@TaskListActivity, board.taskList)
         binding.rvTaskList.adapter = adapter
     }
 
@@ -165,6 +164,12 @@ class TaskListActivity : BaseActivity() {
 
         showProgressDialog(resources.getString(R.string.please_wait))
         FireStoreClass().addUpdateTaskList(this@TaskListActivity, myBoardDetails)
+    }
+
+    fun cardDetails(taskListPosition : Int, cardPosition : Int, model : Cards) {
+        val intent = Intent(this@TaskListActivity, CardDetailsActivity::class.java)
+        intent.putExtra(Constants.CARD_NAME, model.name)
+        startActivity(intent)
     }
 
 }

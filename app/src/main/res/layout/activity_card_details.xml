@@ -43,7 +43,6 @@
                 android:orientation="vertical"
                 android:gravity="center">
 
-
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -51,25 +50,29 @@
                     android:paddingStart="10dp"
                     android:text="@string/card_name"
                     android:textColor="@color/secondary_text_color"
-                    android:textSize="15sp">
+                    android:textSize="16sp">
 
                 </androidx.appcompat.widget.AppCompatTextView>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:paddingTop="10dp"
+                    android:theme="@style/Theme.Material3.Light.NoActionBar">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_card_name_details"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:layout_marginStart="-5dp"
-                        android:layout_marginEnd="-5dp"
-                        android:hint="@string/card_name"
+                        style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                         android:inputType="text"
-                        android:textSize="20sp">
+                        android:textSize="18sp"
+                        tools:ignore="TouchTargetSizeCheck">
 
                     </com.google.android.material.textfield.TextInputEditText>
 
@@ -82,15 +85,118 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="1dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             app:cardElevation="10dp"
             app:cardCornerRadius="1dp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal">
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:text="@string/label_color"
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="16sp">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_label_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:paddingStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/select_color"
+                    android:textColor="@color/primary_text_color"
+                    android:textSize="20sp">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:paddingStart="10dp"
+                    android:text="@string/members"
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="16sp">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_select_members"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:paddingStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/select_members"
+                    android:textColor="@color/primary_text_color"
+                    android:textSize="20sp">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:paddingStart="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/due_date"
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="16sp">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_select_due_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:paddingStart="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/select_due_date"
+                    android:textColor="@color/primary_text_color"
+                    android:textSize="20sp">
+
+                </androidx.appcompat.widget.AppCompatTextView>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="15dp"
+                    android:text="@string/update"
+                    android:textColor="@color/white"
+                    android:background="@drawable/ic_blue_rounded_button"
+                    android:foreground="?attr/selectableItemBackground">
+
+                </androidx.appcompat.widget.AppCompatButton>
+
+            </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>
-
 
 </LinearLayout>

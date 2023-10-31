@@ -28,11 +28,17 @@ open class CardListItemsAdapter(
         return list.size
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val model = list[position]
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, cardPosition: Int) {
+        val model = list[cardPosition]
 
         if (holder is MyViewHolder) {
             holder.itemView.findViewById<TextView>(R.id.tv_card_name).text = model.name
+
+            holder.itemView.setOnClickListener {
+                if (onClickListener != null) {
+                    onClickListener!!.onClick(cardPosition, model)
+                }
+            }
         }
     }
 
@@ -41,7 +47,7 @@ open class CardListItemsAdapter(
     }
 
     interface OnClickListener {
-        fun onClick(position: Int, card : Cards)
+        fun onClick(cardPosition: Int, card : Cards)
     }
 
     class MyViewHolder(view : View) : RecyclerView.ViewHolder(view)
