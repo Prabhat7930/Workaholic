@@ -84,6 +84,18 @@ class TaskListActivity : BaseActivity() {
             }
         }
 
+    private val startUpdateCardDetailsActivity =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                showProgressDialog(resources.getString(R.string.please_wait))
+                FireStoreClass().getBoardDetails(this@TaskListActivity, boardDocumentId)
+            }
+            else {
+                Log.e("Update Card Details", "Cancelled")
+            }
+        }
+
     fun boardDetails(board : Board) {
         myBoardDetails = board
         hideProgressDialog()
@@ -169,7 +181,10 @@ class TaskListActivity : BaseActivity() {
     fun cardDetails(taskListPosition : Int, cardPosition : Int, model : Cards) {
         val intent = Intent(this@TaskListActivity, CardDetailsActivity::class.java)
         intent.putExtra(Constants.CARD_NAME, model.name)
-        startActivity(intent)
+        intent.putExtra(Constants.BOARD_DETAIL, myBoardDetails)
+        intent.putExtra(Constants.TASK_LIST_ITEM_POSITION, taskListPosition)
+        intent.putExtra(Constants.CARD_LIST_ITEM_POSITION, cardPosition)
+        startUpdateCardDetailsActivity.launch(intent)
     }
 
 }

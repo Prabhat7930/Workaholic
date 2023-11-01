@@ -4,6 +4,7 @@ import android.app.Activity
 import android.util.Log
 import android.widget.Toast
 import com.example.workaholic.activity.BoardActivity
+import com.example.workaholic.activity.CardDetailsActivity
 import com.example.workaholic.activity.MainActivity
 import com.example.workaholic.activity.MembersActivity
 import com.example.workaholic.activity.ProfileActivity
@@ -11,6 +12,7 @@ import com.example.workaholic.activity.SignInActivity
 import com.example.workaholic.activity.SignUpActivity
 import com.example.workaholic.activity.TaskListActivity
 import com.example.workaholic.models.Board
+import com.example.workaholic.models.Task
 import com.example.workaholic.models.User
 import com.example.workaholic.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
@@ -148,7 +150,7 @@ open class FireStoreClass {
             }
     }
 
-    fun addUpdateTaskList(activity: TaskListActivity, board : Board) {
+    fun addUpdateTaskList(activity: Activity, board : Board) {
         val taskListHashMap = HashMap<String, Any>()
         taskListHashMap[Constants.TASK_LIST] = board.taskList
 
@@ -156,10 +158,20 @@ open class FireStoreClass {
             .document(board.documentId)
             .update(taskListHashMap)
             .addOnSuccessListener {
-                activity.addUpdateTaskListSuccess()
+                if (activity is TaskListActivity) {
+                    activity.addUpdateTaskListSuccess()
+                }
+                else if (activity is CardDetailsActivity) {
+                    activity.addUpdateTaskListSuccess()
+                }
             }
             .addOnFailureListener {
-                activity.hideProgressDialog()
+                if (activity is TaskListActivity) {
+                    activity.hideProgressDialog()
+                }
+                else if (activity is CardDetailsActivity) {
+                    activity.hideProgressDialog()
+                }
             }
     }
 
