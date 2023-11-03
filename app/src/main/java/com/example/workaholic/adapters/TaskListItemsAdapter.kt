@@ -2,7 +2,6 @@ package com.example.workaholic.adapters
 
 import android.content.Context
 import android.content.res.Resources
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.workaholic.R
 import com.example.workaholic.activity.TaskListActivity
-import com.example.workaholic.models.Cards
 import com.example.workaholic.models.Task
 
 open class TaskListItemsAdapter(private val context : Context,
@@ -132,9 +130,9 @@ open class TaskListItemsAdapter(private val context : Context,
             holder.itemView.findViewById<RecyclerView>(R.id.rv_card_list).adapter = adapter
 
             adapter.setOnClickListener(object : CardListItemsAdapter.OnClickListener {
-                override fun onClick(cardPosition: Int, model : Cards) {
+                override fun onClick(cardPosition: Int) {
                     if (context is TaskListActivity) {
-                        context.cardDetails(holder.adapterPosition, cardPosition, model)
+                        context.cardDetails(holder.adapterPosition, cardPosition)
                     }
                 }
             })

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
@@ -96,7 +95,9 @@ class SignInActivity : BaseActivity() {
 
     fun loginSuccess(user : User) {
         hideProgressDialog()
+        setResult(1)
         startActivity(Intent(this@SignInActivity, MainActivity::class.java))
         finish()
     }
+
 }

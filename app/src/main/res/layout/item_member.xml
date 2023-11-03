@@ -4,7 +4,6 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginBottom="10dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -29,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
+            android:layout_weight="1"
             android:padding="5dp"
             android:orientation="vertical">
 
@@ -54,16 +54,19 @@
 
         </LinearLayout>
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_selected_member"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="center_vertical|end"
+            android:contentDescription="@string/image_contentDescription"
+            android:src="@drawable/baseline_check_24_blue"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+        </androidx.appcompat.widget.AppCompatImageView>
+
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.8dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:background="@color/primary_text_color">
-
-    </View>
 
 </LinearLayout>

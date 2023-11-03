@@ -16,7 +16,7 @@
         <View
             android:id="@+id/view_label_color"
             android:layout_width="match_parent"
-            android:layout_height="0.8dp"
+            android:layout_height="15dp"
             android:visibility="gone"
             android:background="@color/secondary_text_color">
 
@@ -27,10 +27,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:textSize="16dp"
+            android:textSize="16sp"
             tools:text="Card Name">
 
         </androidx.appcompat.widget.AppCompatTextView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_card_selected_member_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_members_name"
@@ -38,13 +48,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:padding="10dp"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textColor="@color/colorAccent"
             android:visibility="gone"
             tools:text="Members Name">
 
         </androidx.appcompat.widget.AppCompatTextView>
-
 
     </LinearLayout>
 

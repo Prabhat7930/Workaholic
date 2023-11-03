@@ -175,7 +175,7 @@ open class FireStoreClass {
             }
     }
 
-    fun getAssignedMembersListDetails(activity : MembersActivity, assignedTo : ArrayList<String>) {
+    fun getAssignedMembersListDetails(activity : Activity, assignedTo : ArrayList<String>) {
         myFireStore.collection(Constants.USERS)
             .whereIn(Constants.ID, assignedTo)
             .get()
@@ -189,10 +189,22 @@ open class FireStoreClass {
                     usersList.add(user)
                 }
 
-                activity.setupMemberList(usersList)
+                if (activity is MembersActivity) {
+                    activity.setupMemberList(usersList)
+                }
+                else if (activity is TaskListActivity) {
+                    activity.boardMembersDetailsList(usersList)
+                }
+
             }
             .addOnFailureListener {
-                activity.hideProgressDialog()
+                if (activity is MembersActivity) {
+                    activity.hideProgressDialog()
+                }
+                else if (activity is TaskListActivity) {
+                    activity.hideProgressDialog()
+                }
+
             }
     }
 

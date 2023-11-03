@@ -17,6 +17,7 @@ import com.example.workaholic.firebase.FireStoreClass
 import com.example.workaholic.models.Board
 import com.example.workaholic.models.Cards
 import com.example.workaholic.models.Task
+import com.example.workaholic.models.User
 import com.example.workaholic.utils.Constants
 
 class TaskListActivity : BaseActivity() {
@@ -25,6 +26,7 @@ class TaskListActivity : BaseActivity() {
 
     private lateinit var myBoardDetails : Board
     private lateinit var boardDocumentId : String
+    lateinit var myAssignedMemberDetailList : ArrayList<User>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,16 +103,8 @@ class TaskListActivity : BaseActivity() {
         hideProgressDialog()
         setupActionBar()
 
-        val addTaskList = Task(resources.getString(R.string.add_task))
-        board.taskList.add(addTaskList)
-
-        binding.rvTaskList.layoutManager = LinearLayoutManager(this,
-            LinearLayoutManager.HORIZONTAL, false)
-
-        binding.rvTaskList.setHasFixedSize(true)
-
-        val adapter = TaskListItemsAdapter(this@TaskListActivity, board.taskList)
-        binding.rvTaskList.adapter = adapter
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FireStoreClass().getAssignedMembersListDetails(this@TaskListActivity, myBoardDetails.assignedTo)
     }
 
     fun createTaskList(taskListName : String) {
@@ -178,13 +172,29 @@ class TaskListActivity : BaseActivity() {
         FireStoreClass().addUpdateTaskList(this@TaskListActivity, myBoardDetails)
     }
 
-    fun cardDetails(taskListPosition : Int, cardPosition : Int, model : Cards) {
+    fun cardDetails(taskListPosition : Int, cardPosition : Int) {
         val intent = Intent(this@TaskListActivity, CardDetailsActivity::class.java)
-        intent.putExtra(Constants.CARD_NAME, model.name)
         intent.putExtra(Constants.BOARD_DETAIL, myBoardDetails)
         intent.putExtra(Constants.TASK_LIST_ITEM_POSITION, taskListPosition)
         intent.putExtra(Constants.CARD_LIST_ITEM_POSITION, cardPosition)
+        intent.putExtra(Constants.BOARD_MEMBERS_LIST, myAssignedMemberDetailList)
         startUpdateCardDetailsActivity.launch(intent)
+    }
+
+    fun boardMembersDetailsList(list : ArrayList<User>) {
+        myAssignedMemberDetailList = list
+        hideProgressDialog()
+
+        val addTaskList = Task(resources.getString(R.string.add_task))
+        myBoardDetails.taskList.add(addTaskList)
+
+        binding.rvTaskList.layoutManager = LinearLayoutManager(this,
+            LinearLayoutManager.HORIZONTAL, false)
+
+        binding.rvTaskList.setHasFixedSize(true)
+
+        val adapter = TaskListItemsAdapter(this@TaskListActivity, myBoardDetails.taskList)
+        binding.rvTaskList.adapter = adapter
     }
 
 }

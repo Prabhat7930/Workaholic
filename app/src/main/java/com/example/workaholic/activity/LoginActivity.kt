@@ -1,10 +1,14 @@
 package com.example.workaholic.activity
 
+import android.app.Instrumentation
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.workaholic.databinding.ActivityLoginBinding
 
 class LoginActivity : BaseActivity() {
@@ -34,8 +38,19 @@ class LoginActivity : BaseActivity() {
         }
 
         binding.btnSignIn1.setOnClickListener {
-            startActivity(Intent(this@LoginActivity, SignInActivity::class.java))
-            finish()
+            val intent = Intent(this@LoginActivity, SignInActivity::class.java)
+            startMainActivityWhenLoginSuccess.launch(intent)
         }
     }
+
+    private val startMainActivityWhenLoginSuccess =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            result ->
+            if (result.resultCode == 1) {
+                finish()
+            }
+            else {
+                Log.e("BackPressed", "Invoked")
+            }
+        }
 }

@@ -2,6 +2,7 @@
 
 package com.example.workaholic.activity
 
+import android.app.Activity
 import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
