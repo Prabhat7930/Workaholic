@@ -7,13 +7,15 @@ data class Cards (
     val name : String = "",
     val createdBy : String = "",
     val assignedTo : ArrayList<String> = ArrayList(),
-    var color : String = ""
+    var color : String = "",
+    var dueDate : Long = 0
 ): Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.createStringArrayList()!!,
-        parcel.readString()!!
+        parcel.readString()!!,
+        parcel.readLong()!!
     ) {
     }
 
@@ -22,6 +24,7 @@ data class Cards (
         writeString(createdBy)
         writeStringList(assignedTo)
         writeString(color)
+        writeLong(dueDate)
     }
 
     override fun describeContents() = 0

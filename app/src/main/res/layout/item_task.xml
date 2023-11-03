@@ -210,85 +210,98 @@
 
             </androidx.cardview.widget.CardView>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_card_list"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp">
-
-            </androidx.recyclerview.widget.RecyclerView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_add_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:elevation="10dp"
-                android:visibility="gone"
-                app:cardCornerRadius="10dp"
-                tools:visibility="visible">
+                android:layout_height="wrap_content">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/ibtn_close_card_name"
-                        android:layout_width="wrap_content"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_card_list"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:contentDescription="@string/image_contentDescription"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_cancel"
-                        tools:ignore="TouchTargetSizeCheck,ImageContrastCheck">
+                        android:layout_margin="5dp">
 
-                    </androidx.appcompat.widget.AppCompatImageButton>
+                    </androidx.recyclerview.widget.RecyclerView>
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/et_card_name"
-                        android:layout_width="0dp"
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cv_add_card"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:autofillHints="@string/hint_card_name"
-                        android:hint="@string/hint_card_name"
-                        android:inputType="text"
-                        tools:ignore="TouchTargetSizeCheck,VisualLintTextFieldSize">
+                        android:layout_margin="8dp"
+                        android:elevation="10dp"
+                        android:visibility="gone"
+                        app:cardCornerRadius="10dp"
+                        tools:visibility="visible">
 
-                    </androidx.appcompat.widget.AppCompatEditText>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
 
-                    <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/ibtn_done_card_name"
-                        android:layout_width="wrap_content"
+                            <androidx.appcompat.widget.AppCompatImageButton
+                                android:id="@+id/ibtn_close_card_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="?attr/selectableItemBackground"
+                                android:contentDescription="@string/image_contentDescription"
+                                android:padding="10dp"
+                                android:src="@drawable/ic_cancel"
+                                tools:ignore="TouchTargetSizeCheck,ImageContrastCheck">
+
+                            </androidx.appcompat.widget.AppCompatImageButton>
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/et_card_name"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:autofillHints="@string/hint_card_name"
+                                android:hint="@string/hint_card_name"
+                                android:inputType="text"
+                                tools:ignore="TouchTargetSizeCheck,VisualLintTextFieldSize">
+
+                            </androidx.appcompat.widget.AppCompatEditText>
+
+                            <androidx.appcompat.widget.AppCompatImageButton
+                                android:id="@+id/ibtn_done_card_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="?attr/selectableItemBackground"
+                                android:contentDescription="@string/image_contentDescription"
+                                android:padding="10dp"
+                                android:src="@drawable/ic_done"
+                                tools:ignore="TouchTargetSizeCheck">
+
+                            </androidx.appcompat.widget.AppCompatImageButton>
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_add_card"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:contentDescription="@string/image_contentDescription"
-                        android:padding="10dp"
-                        android:src="@drawable/ic_done"
-                        tools:ignore="TouchTargetSizeCheck">
+                        android:background="@color/task_list_color"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:elevation="10dp"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="@string/action_add_card"
+                        android:textColor="#5C6BC0"
+                        android:textSize="20sp"
+                        tools:visibility="visible">
 
-                    </androidx.appcompat.widget.AppCompatImageButton>
+                    </androidx.appcompat.widget.AppCompatTextView>
 
                 </LinearLayout>
 
-            </androidx.cardview.widget.CardView>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_add_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/task_list_color"
-                android:foreground="?attr/selectableItemBackground"
-                android:elevation="10dp"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="@string/action_add_card"
-                android:textColor="#5C6BC0"
-                android:textSize="20sp"
-                tools:visibility="visible">
-
-            </androidx.appcompat.widget.AppCompatTextView>
+            </ScrollView>
 
         </LinearLayout>
 

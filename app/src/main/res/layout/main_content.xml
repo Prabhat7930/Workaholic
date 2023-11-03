@@ -11,6 +11,13 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.MainActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    </ScrollView>
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,14 +25,20 @@
         android:elevation="10dp"
         app:cardCornerRadius="10dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_board_list"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
-            
-        </androidx.recyclerview.widget.RecyclerView>
-        
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_board_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+        </ScrollView>
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_no_board"
             android:layout_width="match_parent"
@@ -40,7 +53,7 @@
             android:visibility="gone">
 
         </androidx.appcompat.widget.AppCompatTextView>
-        
+
     </androidx.cardview.widget.CardView>
 
 </LinearLayout>

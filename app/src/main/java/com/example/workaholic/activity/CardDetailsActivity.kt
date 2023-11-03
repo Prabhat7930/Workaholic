@@ -1,6 +1,7 @@
 package com.example.workaholic.activity
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -23,6 +24,10 @@ import com.example.workaholic.models.SelectedMembers
 import com.example.workaholic.models.Task
 import com.example.workaholic.models.User
 import com.example.workaholic.utils.Constants
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class CardDetailsActivity : BaseActivity() {
 
@@ -33,6 +38,7 @@ class CardDetailsActivity : BaseActivity() {
     private var cardPosition : Int = -1
     private var mySelectedColor : String = ""
     private lateinit var myMembersDetailList : ArrayList<User>
+    private var mySelectedDateInMS : Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +76,18 @@ class CardDetailsActivity : BaseActivity() {
             membersListDialog()
         }
 
+        binding.tvSelectDueDate.setOnClickListener {
+            showDatePicker()
+        }
+
         setupSelectedMembersList()
+
+        mySelectedDateInMS = myBoardDetails.taskList[taskListPosition].cards[cardPosition].dueDate
+        if (mySelectedDateInMS > 0) {
+            val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
+            val selectedDate = simpleDateFormat.format(Date(mySelectedDateInMS))
+            binding.tvSelectDueDate.text = selectedDate
+        }
     }
 
     private fun getStringInfo() {
@@ -120,7 +137,8 @@ class CardDetailsActivity : BaseActivity() {
             binding.etCardNameDetails.text.toString(),
             myBoardDetails.taskList[taskListPosition].cards[cardPosition].createdBy,
             myBoardDetails.taskList[taskListPosition].cards[cardPosition].assignedTo,
-            mySelectedColor
+            mySelectedColor,
+            mySelectedDateInMS
         )
 
         val taskList : ArrayList<Task> = myBoardDetails.taskList
@@ -175,7 +193,7 @@ class CardDetailsActivity : BaseActivity() {
         builder.setTitle("Alert")
 
         builder.setMessage("Are you sure you want to delete ${myBoardDetails.taskList[taskListPosition].cards[cardPosition].name}.")
-        builder.setIcon(android.R.drawable.ic_dialog_alert)
+        builder.setIcon(R.drawable.ic_alert)
 
         builder.setPositiveButton("Yes") { dialogInterface, _ ->
             dialogInterface.dismiss()
@@ -291,5 +309,29 @@ class CardDetailsActivity : BaseActivity() {
             binding.tvSelectMembers.visibility = View.VISIBLE
             binding.rvSelectedMembersList.visibility = View.GONE
         }
+    }
+
+    private fun showDatePicker() {
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+        
+        val dpd = DatePickerDialog(
+            this, { _, year, month, dayOfMonth ->
+                val strDayOfMonth = if (dayOfMonth < 10) "0$dayOfMonth" else "$dayOfMonth"
+                val strMonthOfYear = if ((month + 1) < 10) "0${month + 1}" else "${month + 1}"
+                val selectedDate = "$strDayOfMonth/$strMonthOfYear/$year"
+                binding.tvSelectDueDate.text = selectedDate
+
+                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
+                val theDate = sdf.parse(selectedDate)
+                mySelectedDateInMS = theDate!!.time
+             },
+            year,
+            month,
+            day
+        )
+        dpd.show()
     }
 }

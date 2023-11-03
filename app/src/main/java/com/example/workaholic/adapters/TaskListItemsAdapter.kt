@@ -12,14 +12,20 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.workaholic.R
 import com.example.workaholic.activity.TaskListActivity
 import com.example.workaholic.models.Task
+import java.util.Collections
 
 open class TaskListItemsAdapter(private val context : Context,
     private var list : ArrayList<Task>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private var myPositionDraggedFrom = -1
+    private var myPositionDraggedTo = -1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_task, parent, false)
         val layoutParams = LinearLayout.LayoutParams(
@@ -92,7 +98,7 @@ open class TaskListItemsAdapter(private val context : Context,
                     }
                 }
                 else {
-                    Toast.makeText(context, "Please Enter List Name ", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Please enter task name", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -137,7 +143,56 @@ open class TaskListItemsAdapter(private val context : Context,
                 }
             })
 
+            val dividerItemDecoration = DividerItemDecoration(context,
+                DividerItemDecoration.VERTICAL)
 
+            holder.itemView.findViewById<RecyclerView>(R.id.rv_card_list).addItemDecoration(dividerItemDecoration)
+            val helper = ItemTouchHelper(
+                object : ItemTouchHelper.SimpleCallback(
+                    ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0
+                ) {
+                    override fun onMove(
+                        recyclerView: RecyclerView,
+                        dragged: RecyclerView.ViewHolder,
+                        target: RecyclerView.ViewHolder
+                    ): Boolean {
+                        val draggedPosition = dragged.adapterPosition
+                        val targetPosition = target.adapterPosition
+
+                        if (myPositionDraggedFrom == -1) {
+                            myPositionDraggedFrom = draggedPosition
+                        }
+                        myPositionDraggedTo = targetPosition
+
+                        Collections.swap(list[taskPosition].cards, draggedPosition, targetPosition)
+
+                        adapter.notifyItemMoved(draggedPosition, targetPosition)
+                        return false
+                    }
+
+                    override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    }
+
+                    override fun clearView(
+                        recyclerView: RecyclerView,
+                        viewHolder: RecyclerView.ViewHolder
+                    ) {
+                        super.clearView(recyclerView, viewHolder)
+                        if (myPositionDraggedFrom != -1 && myPositionDraggedTo != -1 &&
+                            myPositionDraggedFrom != myPositionDraggedTo) {
+                            (context as TaskListActivity).updateCardsInTaskList(
+                                taskPosition,
+                                list[taskPosition].cards
+                            )
+                        }
+
+                        myPositionDraggedFrom = -1
+                        myPositionDraggedTo = -1
+                    }
+
+                }
+            )
+            helper.attachToRecyclerView(holder.itemView.findViewById(R.id.rv_card_list))
         }
     }
 
@@ -146,7 +201,7 @@ open class TaskListItemsAdapter(private val context : Context,
         builder.setTitle("Alert")
 
         builder.setMessage("Are you sure you want to delete $title.")
-        builder.setIcon(android.R.drawable.ic_dialog_alert)
+        builder.setIcon(R.drawable.ic_alert)
 
         builder.setPositiveButton("Yes") { dialogInterface, _ ->
             dialogInterface.dismiss()

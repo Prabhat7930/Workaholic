@@ -120,8 +120,8 @@ class TaskListActivity : BaseActivity() {
         FireStoreClass().addUpdateTaskList(this@TaskListActivity, myBoardDetails)
     }
 
-    fun updateTaskList(position : Int, listName : String, model : Task) {
-        val task = Task(listName, model.createdBy)
+    fun updateTaskList(position : Int, taskName : String, model : Task) {
+        val task = Task(taskName, model.createdBy, myBoardDetails.taskList[position].cards)
 
         myBoardDetails.taskList[position] = task
         myBoardDetails.taskList.removeAt(myBoardDetails.taskList.size - 1)
@@ -149,7 +149,6 @@ class TaskListActivity : BaseActivity() {
         myBoardDetails.taskList.removeAt(myBoardDetails.taskList.size - 1)
 
         val cardAssignedUserList : ArrayList<String> = ArrayList()
-        cardAssignedUserList.add(FireStoreClass().getCurrUserId())
 
         val card = Cards(
             cardName,
@@ -195,6 +194,15 @@ class TaskListActivity : BaseActivity() {
 
         val adapter = TaskListItemsAdapter(this@TaskListActivity, myBoardDetails.taskList)
         binding.rvTaskList.adapter = adapter
+    }
+
+    fun updateCardsInTaskList(taskListPosition: Int, cards: ArrayList<Cards>) {
+        myBoardDetails.taskList.removeAt(myBoardDetails.taskList.size - 1)
+
+        myBoardDetails.taskList[taskListPosition].cards = cards
+
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FireStoreClass().addUpdateTaskList(this@TaskListActivity, myBoardDetails)
     }
 
 }
