@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +13,9 @@ import com.example.workaholic.R
 import com.example.workaholic.activity.TaskListActivity
 import com.example.workaholic.models.Cards
 import com.example.workaholic.models.SelectedMembers
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 open class CardListItemsAdapter(
     private val context : Context,
@@ -51,6 +55,18 @@ open class CardListItemsAdapter(
         else {
             holder.itemView.findViewById<View>(R.id.view_label_color).visibility = View.GONE
         }
+
+        if (model.dueDate.toString() != "0") {
+            holder.itemView.findViewById<LinearLayout>(R.id.ll_due_date).visibility = View.VISIBLE
+            val date : Long = model.dueDate
+            val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
+            val selectedDate = simpleDateFormat.format(Date(date))
+            holder.itemView.findViewById<TextView>(R.id.tv_due_date).text = selectedDate
+        }
+        else {
+            holder.itemView.findViewById<LinearLayout>(R.id.ll_due_date).visibility = View.GONE
+        }
+
 
         if ((context as TaskListActivity).myAssignedMemberDetailList.size > 0) {
             val selectedMembersList : ArrayList<SelectedMembers> = ArrayList()

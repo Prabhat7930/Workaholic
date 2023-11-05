@@ -211,6 +211,7 @@
             </androidx.cardview.widget.CardView>
 
             <ScrollView
+                android:id="@+id/sl_card_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -223,7 +224,8 @@
                         android:id="@+id/rv_card_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp">
+                        android:layout_margin="5dp"
+                        android:nestedScrollingEnabled="false">
 
                     </androidx.recyclerview.widget.RecyclerView>
 

@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.webkit.MimeTypeMap
 import android.widget.Toast
@@ -50,18 +51,35 @@ class ProfileActivity : BaseActivity() {
         FireStoreClass().loadUserData(this@ProfileActivity)
 
         binding.ivUserProfile.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.READ_MEDIA_IMAGES) ==
-                PackageManager.PERMISSION_GRANTED) {
-                //takeImageFromGallery()
-                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.READ_MEDIA_IMAGES) ==
+                    PackageManager.PERMISSION_GRANTED) {
+                    //takeImageFromGallery()
+                    pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                }
+                else {
+                    ActivityCompat.requestPermissions(
+                        this@ProfileActivity,
+                        arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
+                        READ_STORAGE_PERMISSION_CODE
+                    )
+                }
             }
             else {
-                ActivityCompat.requestPermissions(
-                    this@ProfileActivity,
-                    arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
-                    READ_STORAGE_PERMISSION_CODE
-                )
+                if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                    PackageManager.PERMISSION_GRANTED) {
+                    //takeImageFromGallery()
+                    pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                }
+                else {
+                    ActivityCompat.requestPermissions(
+                        this@ProfileActivity,
+                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                        READ_STORAGE_PERMISSION_CODE
+                    )
+                }
             }
         }
 
@@ -138,10 +156,10 @@ class ProfileActivity : BaseActivity() {
         var galleryIntent = Intent(Intent.ACTION_PICK,
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         resultLauncher.launch(galleryIntent)
-    }*/
+    }
 
 
-    /* LATEST NON DEPRECATED METHOD FOR IMAGE PICK
+    //LATEST NON DEPRECATED METHOD FOR IMAGE PICK
     private var resultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {

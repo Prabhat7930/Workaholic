@@ -43,6 +43,10 @@ android {
 }
 
 dependencies {
+    implementation("com.google.code.gson:gson:2.8.8")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1")
+    implementation("com.google.firebase:firebase-messaging:20.1.1")
     implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
     implementation("com.github.bumptech.glide:glide:4.11.0")
     implementation("com.github.bumptech.glide:compiler:4.11.0")

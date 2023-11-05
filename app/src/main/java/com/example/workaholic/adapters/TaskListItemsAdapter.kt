@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -105,6 +106,9 @@ open class TaskListItemsAdapter(private val context : Context,
             holder.itemView.findViewById<ImageButton>(R.id.ibtn_delete_list).setOnClickListener {
                 alertDialogForListDeletion(taskPosition, model.title)
             }
+
+            //holder.itemView.findViewById<ScrollView>(R.id.sl_card_list).fullScroll(View.FOCUS_DOWN)
+            //holder.itemView.findViewById<ScrollView>(R.id.sl_card_list).smooth
 
             holder.itemView.findViewById<TextView>(R.id.tv_add_card).setOnClickListener {
                 holder.itemView.findViewById<TextView>(R.id.tv_add_card).visibility = View.GONE

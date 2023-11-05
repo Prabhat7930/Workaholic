@@ -133,7 +133,7 @@ class TaskListActivity : BaseActivity() {
     fun addUpdateTaskListSuccess() {
         hideProgressDialog()
 
-        showProgressDialog(resources.getString(R.string.please_wait))
+        //showProgressDialog(resources.getString(R.string.please_wait))
         FireStoreClass().getBoardDetails(this@TaskListActivity, myBoardDetails.documentId)
     }
 
@@ -201,7 +201,7 @@ class TaskListActivity : BaseActivity() {
 
         myBoardDetails.taskList[taskListPosition].cards = cards
 
-        showProgressDialog(resources.getString(R.string.please_wait))
+        //showProgressDialog(resources.getString(R.string.please_wait))
         FireStoreClass().addUpdateTaskList(this@TaskListActivity, myBoardDetails)
     }
 

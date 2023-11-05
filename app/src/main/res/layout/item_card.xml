@@ -16,7 +16,7 @@
         <View
             android:id="@+id/view_label_color"
             android:layout_width="match_parent"
-            android:layout_height="15dp"
+            android:layout_height="20dp"
             android:visibility="gone"
             android:background="@color/secondary_text_color">
 
@@ -32,10 +32,48 @@
 
         </androidx.appcompat.widget.AppCompatTextView>
 
+        <LinearLayout
+            android:id="@+id/ll_due_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_due_by"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="-10dp"
+                android:layout_weight="3"
+                android:padding="6dp"
+                android:textSize="16sp"
+                android:text="@string/due_by"
+                tools:text="Due by : ">
+
+            </androidx.appcompat.widget.AppCompatTextView>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_due_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="-10dp"
+                android:padding="6dp"
+                android:textSize="16sp"
+                tools:text="Due date">
+
+            </androidx.appcompat.widget.AppCompatTextView>
+
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_card_selected_member_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:layout_marginBottom="10dp"
             android:visibility="gone"
             tools:visibility="visible">

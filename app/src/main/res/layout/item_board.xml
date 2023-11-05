@@ -51,8 +51,20 @@
 
             </androidx.appcompat.widget.AppCompatTextView>
 
-
         </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/iv_selected_member"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="center_vertical|end"
+            android:contentDescription="@string/image_contentDescription"
+            android:src="@drawable/baseline_check_24_blue"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+        </androidx.appcompat.widget.AppCompatImageButton>
 
     </LinearLayout>
 

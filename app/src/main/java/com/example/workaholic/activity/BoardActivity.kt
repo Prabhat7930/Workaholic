@@ -55,18 +55,35 @@ class BoardActivity : BaseActivity() {
         }
 
         binding.ivBoardImage.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.READ_MEDIA_IMAGES) ==
-                PackageManager.PERMISSION_GRANTED) {
-
-                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.READ_MEDIA_IMAGES) ==
+                    PackageManager.PERMISSION_GRANTED) {
+                    //takeImageFromGallery()
+                    pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                }
+                else {
+                    ActivityCompat.requestPermissions(
+                        this@BoardActivity,
+                        arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
+                        READ_STORAGE_PERMISSION_CODE
+                    )
+                }
             }
             else {
-                ActivityCompat.requestPermissions(
-                    this@BoardActivity,
-                    arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
-                    READ_STORAGE_PERMISSION_CODE
-                )
+                if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                    PackageManager.PERMISSION_GRANTED) {
+                    //takeImageFromGallery()
+                    pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                }
+                else {
+                    ActivityCompat.requestPermissions(
+                        this@BoardActivity,
+                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                        READ_STORAGE_PERMISSION_CODE
+                    )
+                }
             }
         }
 
@@ -169,7 +186,6 @@ class BoardActivity : BaseActivity() {
         val assignedUsersArrayList: ArrayList<String> = ArrayList()
 
         if (binding.etBoardName.text.toString() != "") {
-            Toast.makeText(this@BoardActivity, "Board Name not empty", Toast.LENGTH_SHORT).show()
             assignedUsersArrayList.add(getCurrentUserID())
 
             val board = Board(

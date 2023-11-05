@@ -1,16 +1,25 @@
 package com.example.workaholic.activity
 
+import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,7 +33,9 @@ import com.example.workaholic.models.User
 import com.example.workaholic.utils.Constants
 import com.google.android.material.navigation.NavigationView.*
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import de.hdodenhof.circleimageview.CircleImageView
+
 
 class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
 
@@ -32,6 +43,12 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
 
     private lateinit var myUserName : String
     private lateinit var myUser: User
+    private lateinit var mySharedPrefs : SharedPreferences
+
+    companion object {
+        const val POST_NOTIFICATION_CODE = 1
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +58,23 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.statusBarColor = ContextCompat.getColor(this, R.color.colorAccent)
+        }
+
+
+        checkNotificationPermission()
+
+
+        mySharedPrefs = this.getSharedPreferences(Constants.WORKAHOLIC_PREFERENCES, Context.MODE_PRIVATE)
+
+        val tokenUpdated = mySharedPrefs.getBoolean(Constants.FCM_TOKEN_UPDATED, false)
+        if (tokenUpdated) {
+            showProgressDialog(resources.getString(R.string.please_wait))
+            FireStoreClass().loadUserData(this@MainActivity, true)
+        }
+        else {
+            FirebaseMessaging.getInstance().token.addOnSuccessListener{
+                updateFCMToken(it)
+            }
         }
 
         setupActionBar()
@@ -89,6 +123,61 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
         }
     }
 
+    private fun checkNotificationPermission(){
+        if (ContextCompat.checkSelfPermission(this , Manifest.permission.POST_NOTIFICATIONS) ==
+            PackageManager.PERMISSION_GRANTED) {
+            Log.d("Permission", "Granted")
+        }
+        else {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                POST_NOTIFICATION_CODE
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == POST_NOTIFICATION_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("Permission", "Granted")
+            }
+            else {
+                openAlertDialog()
+            }
+        }
+    }
+
+    private fun openAlertDialog() {
+        val alertDialogBuilder: AlertDialog.Builder = AlertDialog.Builder(this)
+        alertDialogBuilder.setMessage("This app requires your location to function!")
+        alertDialogBuilder.setPositiveButton("Try again"
+        ) { _, _ -> checkNotificationPermission() }
+        alertDialogBuilder.setNegativeButton("Settings"
+        ) { _, _ ->
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            intent.addCategory(Intent.CATEGORY_DEFAULT)
+            val packageName = "com.example.workaholic"
+            val uri = Uri.fromParts("package", packageName, null)
+            intent.data = uri
+
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivity(intent)
+                finish()
+            }
+            else {
+                Toast.makeText(this@MainActivity, "error!", Toast.LENGTH_SHORT).show()
+            }
+        }
+        val alertDialog: AlertDialog = alertDialogBuilder.create()
+        alertDialog.show()
+    }
+
 
     private val startUpdateActivityForResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -124,6 +213,7 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
 
                 Handler(Looper.getMainLooper()).postDelayed({
                     FirebaseAuth.getInstance().signOut()
+                    mySharedPrefs.edit().clear().apply()
 
                     val intent = Intent(this@MainActivity, LoginActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or
@@ -140,6 +230,7 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
     }
 
     fun updateNavUserDetails(user : User, readBoardList : Boolean) {
+        hideProgressDialog()
         myUser = user
         val navUserImage : CircleImageView = findViewById(R.id.nav_user_image)
         var navUserName : TextView = findViewById(R.id.tv_username)
@@ -188,5 +279,21 @@ class MainActivity : BaseActivity(), OnNavigationItemSelectedListener {
         }
     }
 
+    fun tokenUpdateSuccess() {
+        hideProgressDialog()
+        val editor : SharedPreferences.Editor = mySharedPrefs.edit()
+        editor.putBoolean(Constants.FCM_TOKEN_UPDATED, true)
+        editor.apply()
 
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FireStoreClass().loadUserData(this@MainActivity, true)
+    }
+
+    private fun updateFCMToken(token : String) {
+        val userHashMap = HashMap<String, Any>()
+        userHashMap[Constants.FCM_TOKEN] = token
+
+        showProgressDialog(resources.getString(R.string.please_wait))
+        FireStoreClass().updateUserProfileData(this@MainActivity, userHashMap)
+    }
 }

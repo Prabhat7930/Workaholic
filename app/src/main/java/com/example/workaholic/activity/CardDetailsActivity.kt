@@ -332,6 +332,7 @@ class CardDetailsActivity : BaseActivity() {
             month,
             day
         )
+        dpd.datePicker.minDate = System.currentTimeMillis()
         dpd.show()
     }
 }

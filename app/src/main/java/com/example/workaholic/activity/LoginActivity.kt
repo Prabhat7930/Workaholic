@@ -1,13 +1,12 @@
 package com.example.workaholic.activity
 
-import android.app.Instrumentation
+
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
-import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.workaholic.databinding.ActivityLoginBinding
 
@@ -31,7 +30,6 @@ class LoginActivity : BaseActivity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
-
 
         binding.btnSignUp1.setOnClickListener {
             startActivity(Intent(this@LoginActivity, SignUpActivity::class.java))
